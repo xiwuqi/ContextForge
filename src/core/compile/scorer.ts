@@ -53,6 +53,18 @@ function scoreCandidate(taskTokens: Set<string>, rawTask: string, candidate: str
     score += lowerTask.includes('doc') ? 0.8 : 0.1;
   }
 
+  if (
+    normalizedCandidate.startsWith('tests/fixtures/') ||
+    normalizedCandidate.includes('/golden/') ||
+    normalizedCandidate.startsWith('tests/helpers')
+  ) {
+    score -= lowerTask.includes('fixture') || lowerTask.includes('golden') ? 0.5 : 3;
+  }
+
+  if (normalizedCandidate.startsWith('.github/codex/prompts/')) {
+    score -= lowerTask.includes('codex') || lowerTask.includes('prompt') || lowerTask.includes('export') ? 0.5 : 3;
+  }
+
   return score;
 }
 

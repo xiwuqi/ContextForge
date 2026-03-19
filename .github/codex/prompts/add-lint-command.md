@@ -9,12 +9,12 @@ Add a first-class `lint` command to the CLI surface and document it in the repos
 ## Read First
 
 - `AGENTS.md`
-- `tests/fixtures/golden/task-add-lint-command.md`
 - `src/cli/commands/lint.ts`
 - `src/core/lint/command-validation.ts`
 - `src/cli/commands/compile.ts`
 - `src/cli/commands/export-codex.ts`
 - `src/cli/commands/index.ts`
+- `src/cli/commands/init.ts`
 
 ## Relevant Paths
 
@@ -22,7 +22,6 @@ Add a first-class `lint` command to the CLI surface and document it in the repos
 - `src/cli/commands`
 - `src/cli`
 - `src/core/lint`
-- `tests/fixtures/node-basic/docs`
 - `docs/product`
 - `src`
 - `tests`
@@ -56,6 +55,6 @@ Add a first-class `lint` command to the CLI surface and document it in the repos
 
 ## Notes
 
-- Repository root is ..
+- Repository root is `.`.
 - Package manager is npm.
-- Primary languages include javascript, json, markdown, python, toml, typescript, yaml.
+- Primary languages include javascript, json, markdown, typescript, yaml.

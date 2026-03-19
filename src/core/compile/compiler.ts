@@ -19,6 +19,10 @@ export interface CompileTaskOptions {
   provider?: TaskPackProvider | null;
 }
 
+function normalizeHeading(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
 async function loadRepoContext(rootDir: string, clock?: Date): Promise<RepoContext> {
   const contextPath = resolveFromRoot(rootDir, CONTEXT_FILE);
   const storedContext = await tryReadTextFile(contextPath);
@@ -36,13 +40,32 @@ async function readAgentsConstraints(rootDir: string): Promise<string[]> {
     return [];
   }
 
-  return agentsMarkdown
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line.startsWith('- '))
-    .map((line) => line.replace(/^-\s+/, '').trim())
-    .filter((line) => line.length > 0)
-    .slice(0, 12);
+  const allowedSections = [
+    'product boundaries',
+    'cli ux rules',
+    'output quality rules',
+    'forbidden moves',
+    'definition of done',
+  ];
+
+  let shouldCollect = false;
+  const bullets: string[] = [];
+
+  for (const line of agentsMarkdown.split(/\r?\n/)) {
+    const trimmedLine = line.trim();
+    const headingMatch = trimmedLine.match(/^#{1,6}\s+(.+)$/);
+    if (headingMatch) {
+      const normalized = normalizeHeading(headingMatch[1] ?? '');
+      shouldCollect = allowedSections.some((section) => normalized.includes(section));
+      continue;
+    }
+
+    if (shouldCollect && trimmedLine.startsWith('- ')) {
+      bullets.push(trimmedLine.replace(/^-\s+/, '').trim());
+    }
+  }
+
+  return bullets.slice(0, 12);
 }
 
 function mergeArray(base: string[], enhancement: string[] | undefined): string[] {
@@ -76,7 +99,7 @@ function buildHeuristicDoneWhen(parsedDoneWhen: string[], validationCommands: st
 }
 
 function buildAssumptions(context: RepoContext): string[] {
-  const assumptions = [`Repository root is ${context.repo.root}.`];
+  const assumptions = ['Repository root is `.`.'];
   if (context.repo.packageManager) {
     assumptions.push(`Package manager is ${context.repo.packageManager}.`);
   }

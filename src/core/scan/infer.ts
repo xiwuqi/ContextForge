@@ -10,6 +10,18 @@ interface PackageJsonShape {
   devDependencies?: Record<string, string>;
 }
 
+export function isAuxiliaryFixturePath(relativePath: string): boolean {
+  const normalized = relativePath.toLowerCase();
+  return (
+    normalized.startsWith('tests/fixtures/') ||
+    normalized.startsWith('test/fixtures/') ||
+    normalized.startsWith('fixtures/') ||
+    normalized.includes('/__fixtures__/') ||
+    normalized.includes('/__snapshots__/') ||
+    normalized.includes('/golden/')
+  );
+}
+
 export function isConfigFile(relativePath: string): boolean {
   const baseName = path.posix.basename(relativePath);
 

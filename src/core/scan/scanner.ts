@@ -16,6 +16,7 @@ import {
   inferImportantPaths,
   inferLanguages,
   inferPackageManager,
+  isAuxiliaryFixturePath,
   loadPackageJson,
   loadPyproject,
 } from './infer.js';
@@ -90,28 +91,30 @@ export async function scanRepository(options: ScanOptions): Promise<RepoContext>
   const maxDepth = options.maxDepth ?? 6;
   const matcher = await createIgnoreMatcher(options.rootDir);
   const walkResult = await walkRepository(options.rootDir, maxDepth, matcher);
-  const packageJson = await loadPackageJson(options.rootDir, walkResult.files);
-  const pyprojectContent = await loadPyproject(options.rootDir, walkResult.files);
-  const docs = inferDocs(walkResult.files);
-  const configs = inferConfigs(walkResult.files);
-  const entrySignals = inferEntrySignals(walkResult.files);
+  const analysisDirectories = walkResult.directories.filter((entry) => !isAuxiliaryFixturePath(entry));
+  const analysisFiles = walkResult.files.filter((entry) => !isAuxiliaryFixturePath(entry));
+  const packageJson = await loadPackageJson(options.rootDir, analysisFiles);
+  const pyprojectContent = await loadPyproject(options.rootDir, analysisFiles);
+  const docs = inferDocs(analysisFiles);
+  const configs = inferConfigs(analysisFiles);
+  const entrySignals = inferEntrySignals(analysisFiles);
   const repoContext: RepoContext = {
     repo: {
       name: path.basename(options.rootDir),
       root: '.',
-      detectedLanguages: inferLanguages(walkResult.files, packageJson),
-      detectedFrameworks: inferFrameworks(walkResult.files, packageJson, pyprojectContent),
-      packageManager: inferPackageManager(walkResult.files),
+      detectedLanguages: inferLanguages(analysisFiles, packageJson),
+      detectedFrameworks: inferFrameworks(analysisFiles, packageJson, pyprojectContent),
+      packageManager: inferPackageManager(analysisFiles),
     },
     structure: {
-      importantPaths: inferImportantPaths(walkResult.directories, docs),
+      importantPaths: inferImportantPaths(analysisDirectories, docs),
       importantFiles: inferImportantFiles(configs, docs, entrySignals),
-      topLevelDirectories: walkResult.directories.filter((directoryPath) => !directoryPath.includes('/')),
+      topLevelDirectories: analysisDirectories.filter((directoryPath) => !directoryPath.includes('/')),
       entrySignals,
       scannedDirectories: walkResult.directories,
       scannedFiles: walkResult.files,
     },
-    commands: inferCommands(walkResult.files, packageJson, pyprojectContent),
+    commands: inferCommands(analysisFiles, packageJson, pyprojectContent),
     docs,
     configs,
     generatedAt: nowIso(options.clock),

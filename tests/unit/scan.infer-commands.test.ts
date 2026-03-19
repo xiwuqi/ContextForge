@@ -11,6 +11,7 @@ describe('command inference', () => {
     });
 
     expect(context.repo.packageManager).toBe('npm');
+    expect(context.repo.detectedLanguages).not.toContain('python');
     expect(context.commands.build).toEqual(['npm run build']);
     expect(context.commands.test).toEqual(['npm run test']);
     expect(context.commands.lint).toEqual(['npm run lint']);
