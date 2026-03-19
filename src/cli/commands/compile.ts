@@ -4,7 +4,9 @@ import { normalizeRelativePath } from '../../core/utils/paths.js';
 import { printJson, type CliRuntime } from '../io.js';
 
 export interface CompileCommandOptions {
-  input: string;
+  input?: string;
+  githubIssue?: string;
+  githubIssueJson?: string;
   json?: boolean;
   title?: string;
 }
@@ -13,6 +15,8 @@ export async function runCompileCommand(runtime: CliRuntime, options: CompileCom
   const result = await compileTask({
     rootDir: runtime.cwd,
     inputFile: options.input,
+    githubIssue: options.githubIssue,
+    githubIssueJson: options.githubIssueJson,
     title: options.title,
   });
 

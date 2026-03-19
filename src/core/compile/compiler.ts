@@ -1,22 +1,27 @@
 import path from 'node:path';
 import { CONTEXT_FILE, DEFAULT_SCAN_MAX_DEPTH, TASK_PACK_DIR } from '../utils/constants.js';
-import { readTextFile, tryReadTextFile, writeJsonFile, writeTextFile } from '../utils/filesystem.js';
-import { findRepositoryRoot, normalizeRelativePath, relativeToRoot, resolveFromRoot, slugify } from '../utils/paths.js';
+import { tryReadTextFile, writeJsonFile, writeTextFile } from '../utils/filesystem.js';
+import { findRepositoryRoot, resolveFromRoot, slugify } from '../utils/paths.js';
 import { clampNumber, dedupeStrings, summarizeText } from '../utils/text.js';
 import { nowIso } from '../utils/time.js';
 import { scanRepository } from '../scan/scanner.js';
 import { RepoContextSchema, TaskPackSchema, type RepoContext, type TaskPack } from '../schema/index.js';
 import { createProviderFromEnvironment, type TaskPackProvider } from '../providers/index.js';
 import { parseTaskMarkdown } from './parser.js';
-import { rankRelevantPaths } from './scorer.js';
 import { renderTaskPackMarkdown } from './render.js';
+import { rankRelevantPaths } from './scorer.js';
+import { loadCompileSource } from './source-loader.js';
 
 export interface CompileTaskOptions {
   rootDir?: string;
-  inputFile: string;
+  inputFile?: string;
+  githubIssue?: string;
+  githubIssueJson?: string;
   title?: string;
   clock?: Date;
   provider?: TaskPackProvider | null;
+  fetchImpl?: typeof fetch;
+  githubToken?: string | null;
 }
 
 function normalizeHeading(value: string): string {
@@ -118,13 +123,24 @@ export async function compileTask(options: CompileTaskOptions): Promise<{
   const rootDir = options.rootDir
     ? await findRepositoryRoot(options.rootDir)
     : await findRepositoryRoot(process.cwd());
-  const absoluteInputPath = path.resolve(rootDir, options.inputFile);
-  const taskMarkdown = await readTextFile(absoluteInputPath);
-  const fallbackTitle =
-    options.title ?? slugify(path.basename(options.inputFile, path.extname(options.inputFile))).replace(/-/g, ' ');
-  const parsedTask = parseTaskMarkdown(taskMarkdown, fallbackTitle);
+  const source = await loadCompileSource({
+    rootDir,
+    inputFile: options.inputFile,
+    githubIssue: options.githubIssue,
+    githubIssueJson: options.githubIssueJson,
+    fetchImpl: options.fetchImpl,
+    githubToken: options.githubToken ?? process.env.GITHUB_TOKEN ?? null,
+  });
+  const parsedTask = parseTaskMarkdown(source.taskMarkdown, options.title ?? source.title);
   const repoContext = await loadRepoContext(rootDir, options.clock);
-  const rankedPaths = rankRelevantPaths(taskMarkdown, parsedTask.referencedPaths, repoContext);
+  const sourceParentPath =
+    source.sourceTaskPath.includes('://') || path.posix.dirname(source.sourceTaskPath) === '.'
+      ? null
+      : path.posix.dirname(source.sourceTaskPath);
+  const rankedPaths = rankRelevantPaths(source.taskMarkdown, parsedTask.referencedPaths, repoContext, [
+    source.sourceTaskPath,
+    ...(sourceParentPath ? [sourceParentPath] : []),
+  ]);
   const repoConstraints = await readAgentsConstraints(rootDir);
   const parsedValidationCommands = parsedTask.sections.validation?.bullets ?? [];
   const validationCommands = dedupeStrings([
@@ -138,19 +154,30 @@ export async function compileTask(options: CompileTaskOptions): Promise<{
     taskId: slugify(options.title ?? parsedTask.title),
     title: options.title ?? parsedTask.title,
     objective: parsedTask.sections.objective?.text || summarizeText(parsedTask.summary, 200),
-    userRequestSummary: summarizeText(parsedTask.summary || taskMarkdown, 320),
-    sourceTaskPath: normalizeRelativePath(relativeToRoot(rootDir, absoluteInputPath)),
+    userRequestSummary: summarizeText(parsedTask.summary || source.taskMarkdown, 320),
+    sourceTaskPath: source.sourceTaskPath,
+    sourceType: source.type,
+    sourceRef: source.ref,
+    sourceTitle: source.title || parsedTask.title,
+    sourceLabels: source.labels,
+    sourceUrl: source.url,
     relevantPaths: rankedPaths.relevantPaths,
     relevantFiles: rankedPaths.relevantFiles,
     possiblyRelatedPaths: rankedPaths.possiblyRelatedPaths,
     constraints: mergeArray(parsedTask.sections.constraints?.bullets ?? [], repoConstraints).slice(0, 12),
-    assumptions: mergeArray(parsedTask.sections.assumptions?.bullets ?? [], buildAssumptions(repoContext)).slice(0, 8),
+    assumptions: mergeArray(
+      parsedTask.sections.assumptions?.bullets ?? [],
+      buildAssumptions(repoContext),
+    ).slice(0, 8),
     risks: mergeArray(
       parsedTask.sections.risks?.bullets ?? [],
       rankedPaths.confidence < 0.55 ? ['Relevant path selection is heuristic and may need review.'] : [],
     ).slice(0, 8),
     validationCommands,
-    doneWhen: buildHeuristicDoneWhen(parsedTask.sections.doneWhen?.bullets ?? [], validationCommands).slice(0, 8),
+    doneWhen: buildHeuristicDoneWhen(
+      parsedTask.sections.doneWhen?.bullets ?? [],
+      validationCommands,
+    ).slice(0, 8),
     implementationPlan: mergeArray(
       parsedTask.sections.implementationPlan?.bullets ?? [],
       buildHeuristicPlan(options.title ?? parsedTask.title, rankedPaths.relevantPaths),
@@ -168,7 +195,7 @@ export async function compileTask(options: CompileTaskOptions): Promise<{
     try {
       const enhancement = await provider.enhance({
         repoContext,
-        taskMarkdown,
+        taskMarkdown: source.taskMarkdown,
         parsedTask: {
           title: heuristicTaskPack.title,
           summary: heuristicTaskPack.userRequestSummary,
@@ -202,11 +229,7 @@ export async function compileTask(options: CompileTaskOptions): Promise<{
           enhancement.implementationPlan,
         ).slice(0, 8),
         openQuestions: mergeArray(heuristicTaskPack.openQuestions, enhancement.openQuestions).slice(0, 8),
-        confidence: clampNumber(
-          enhancement.confidence ?? heuristicTaskPack.confidence + 0.12,
-          0,
-          0.98,
-        ),
+        confidence: clampNumber(enhancement.confidence ?? heuristicTaskPack.confidence + 0.12, 0, 0.98),
         provider: provider.name,
       });
     } catch {

@@ -79,9 +79,12 @@ export function rankRelevantPaths(
   rawTask: string,
   explicitPaths: string[],
   context: RepoContext,
+  excludedPaths: string[] = [],
 ): RankedPaths {
+  const excludedPathSet = new Set(excludedPaths.map((candidate) => normalizeRelativePath(candidate)));
   const taskTokens = new Set(tokenize(rawTask));
   const scored = collectCandidates(context)
+    .filter((candidate) => !excludedPathSet.has(normalizeRelativePath(candidate)))
     .map((candidate) => ({
       candidate,
       score: scoreCandidate(taskTokens, rawTask, candidate),
@@ -91,8 +94,9 @@ export function rankRelevantPaths(
 
   const exactMatches = explicitPaths.filter(
     (candidate) =>
-      context.structure.scannedDirectories.includes(candidate) ||
-      context.structure.scannedFiles.includes(candidate),
+      (context.structure.scannedDirectories.includes(candidate) ||
+        context.structure.scannedFiles.includes(candidate)) &&
+      !excludedPathSet.has(normalizeRelativePath(candidate)),
   );
 
   const fileScores = scored.filter((entry) => pathLooksLikeFile(entry.candidate));

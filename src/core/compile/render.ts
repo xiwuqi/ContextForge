@@ -9,12 +9,20 @@ function renderList(title: string, items: string[]): string {
 }
 
 export function renderTaskPackMarkdown(taskPack: TaskPack): string {
+  const sourceMetadataLines = [
+    `- Source Task: \`${taskPack.sourceTaskPath}\``,
+    `- Source Type: \`${taskPack.sourceType}\``,
+    `- Source Ref: \`${taskPack.sourceRef}\``,
+    `- Source Title: ${taskPack.sourceTitle}`,
+    ...(taskPack.sourceUrl ? [`- Source URL: ${taskPack.sourceUrl}`] : []),
+  ];
+
   return [
     `# Task Pack: ${taskPack.title}`,
     '',
     `- Task ID: \`${taskPack.taskId}\``,
     `- Confidence: ${taskPack.confidence.toFixed(2)}`,
-    `- Source Task: \`${taskPack.sourceTaskPath}\``,
+    ...sourceMetadataLines,
     `- Provider: ${taskPack.provider ?? 'heuristic'}`,
     `- Generated: ${taskPack.generatedAt}`,
     '',
@@ -26,6 +34,7 @@ export function renderTaskPackMarkdown(taskPack: TaskPack): string {
     '',
     taskPack.userRequestSummary,
     '',
+    renderList('Source Labels', taskPack.sourceLabels),
     renderList('Relevant Paths', taskPack.relevantPaths),
     renderList('Relevant Files', taskPack.relevantFiles),
     renderList('Possibly Related Paths', taskPack.possiblyRelatedPaths),

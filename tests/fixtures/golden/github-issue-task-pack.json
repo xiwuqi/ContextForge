@@ -1,0 +1,59 @@
+{
+  "taskId": "support-github-issue-sources-in-compile",
+  "title": "Support GitHub issue sources in compile",
+  "objective": "Make `contextforge compile` accept GitHub issues directly.",
+  "userRequestSummary": "Developers usually start from GitHub issues, not local markdown files. Extend the compile source loader, CLI flags, schema metadata, and documentation so the tool can ingest issue content without manual copy-paste.",
+  "sourceTaskPath": "issues/contextforge-issue-101.json",
+  "sourceType": "github_issue_json",
+  "sourceRef": "xiwuqi/ContextForge#101",
+  "sourceTitle": "Support GitHub issue sources in compile",
+  "sourceLabels": [
+    "enhancement",
+    "cli",
+    "github"
+  ],
+  "sourceUrl": "https://github.com/xiwuqi/ContextForge/issues/101",
+  "relevantPaths": [
+    "src",
+    "tests"
+  ],
+  "relevantFiles": [
+    "tests/index.test.ts"
+  ],
+  "possiblyRelatedPaths": [
+    "tests/fixtures",
+    "docs"
+  ],
+  "constraints": [
+    "Keep the workflow local-first.",
+    "Do not add a hosted backend.",
+    "Keep GitHub fetching optional."
+  ],
+  "assumptions": [
+    "Repository root is `.`.",
+    "Package manager is npm.",
+    "Primary languages include json, markdown, typescript."
+  ],
+  "risks": [],
+  "validationCommands": [
+    "npm run build",
+    "npm run test",
+    "npm run lint"
+  ],
+  "doneWhen": [
+    "`contextforge compile` accepts a GitHub issue source.",
+    "Task packs include source metadata.",
+    "Documentation explains the new source flags."
+  ],
+  "implementationPlan": [
+    "Inspect src and the nearest related configuration before editing.",
+    "Implement the smallest change set needed to complete \"Support GitHub issue sources in compile\".",
+    "Add or update tests that cover the requested behavior.",
+    "Refresh documentation or generated guidance if the user-facing behavior changes.",
+    "Run the listed validation commands before considering the task done."
+  ],
+  "openQuestions": [],
+  "confidence": 0.645,
+  "provider": null,
+  "generatedAt": "2026-03-19T18:00:00.000Z"
+}

@@ -64,3 +64,18 @@ Deliver:
 Exit criteria:
 
 - integration tests cover missing-path and stale-guidance scenarios
+
+## Milestone 5: GitHub Issue Ingestion
+
+Deliver:
+
+- `compile` support for `--github-issue` and `--github-issue-json`
+- normalized source loading before task compilation
+- task-pack source metadata for GitHub-backed tasks
+- deterministic fixtures for issue JSON and generated task packs
+
+Exit criteria:
+
+- `compile` accepts exactly one source flag
+- public and authenticated issue fetching share the same normalized path
+- offline issue JSON compilation works without network access

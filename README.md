@@ -28,10 +28,16 @@ If you do not want to link the CLI globally, use `node dist/cli/index.js` after 
 ```bash
 contextforge init [--write-agents] [--json]
 contextforge scan [--json] [--max-depth 6]
-contextforge compile --input <file> [--title <title>] [--json]
+contextforge compile (--input <file> | --github-issue <url|owner/repo#number> | --github-issue-json <path>) [--title <title>] [--json]
 contextforge export codex --input <task-pack.json> [--output <file>]
 contextforge lint [--json] [--strict]
 ```
+
+`contextforge compile` requires exactly one source flag. Use:
+
+- `--input <file>` for the existing local markdown workflow
+- `--github-issue <url|owner/repo#number>` to fetch a GitHub issue directly
+- `--github-issue-json <path>` for offline compilation from an exported issue payload
 
 ## Generated files
 
@@ -61,6 +67,14 @@ contextforge init
 contextforge compile --input examples/issue-add-command.md
 ```
 
+You can also compile directly from GitHub issues:
+
+```bash
+contextforge compile --github-issue https://github.com/owner/repo/issues/123
+contextforge compile --github-issue owner/repo#123
+contextforge compile --github-issue-json tests/fixtures/github/contextforge-issue-101.json
+```
+
 3. Export a Codex prompt from the generated task pack.
 
 ```bash
@@ -76,6 +90,22 @@ contextforge lint
 ## Provider mode
 
 ContextForge works without any provider configuration. If `CONTEXTFORGE_PROVIDER=openai` and `OPENAI_API_KEY` are present, `compile` attempts a model-enhanced pass and falls back to deterministic heuristics if the provider call fails.
+
+## GitHub issue sources
+
+GitHub issue fetching stays optional:
+
+- Public issues can be fetched directly with `--github-issue`.
+- If `GITHUB_TOKEN` is set, ContextForge sends it as a bearer token for authenticated issue access.
+- Offline mode still works with `--input` and `--github-issue-json`.
+
+Task packs now include source metadata so downstream tooling can tell where the task came from:
+
+- `source_type`
+- `source_ref`
+- `source_title`
+- `source_labels`
+- `source_url`
 
 ## Repository layout
 

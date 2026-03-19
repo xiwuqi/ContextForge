@@ -1,11 +1,22 @@
 import { z } from 'zod';
 
+export const TaskPackSourceTypeSchema = z.enum([
+  'markdown_file',
+  'github_issue',
+  'github_issue_json',
+]);
+
 export const TaskPackSchema = z.object({
   taskId: z.string(),
   title: z.string(),
   objective: z.string(),
   userRequestSummary: z.string(),
   sourceTaskPath: z.string(),
+  sourceType: TaskPackSourceTypeSchema,
+  sourceRef: z.string(),
+  sourceTitle: z.string(),
+  sourceLabels: z.array(z.string()),
+  sourceUrl: z.string().nullable(),
   relevantPaths: z.array(z.string()),
   relevantFiles: z.array(z.string()),
   possiblyRelatedPaths: z.array(z.string()),

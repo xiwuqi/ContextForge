@@ -1,6 +1,6 @@
 # ContextForge PRD
 
-- Version: v0.1 MVP
+- Version: v0.2 step 1
 - Status: Ready for implementation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
@@ -14,7 +14,7 @@ ContextForge compiles repository context plus issue, PRD, or task markdown into 
 The MVP stays inside four capabilities:
 
 1. scan a repository
-2. compile markdown into a task pack
+2. compile markdown or GitHub issue sources into a task pack
 3. export a Codex-ready prompt
 4. lint stale context and guidance
 
@@ -60,6 +60,11 @@ Codex export:
 - title
 - objective
 - user request summary
+- source type
+- source ref
+- source title
+- source labels
+- source url
 - relevant paths
 - relevant files
 - possibly related paths

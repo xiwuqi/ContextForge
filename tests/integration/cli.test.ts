@@ -1,8 +1,8 @@
 import path from 'node:path';
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 import { runCli } from '../../src/cli/app.js';
-import { copyFixture } from '../helpers.js';
+import { copyFixture, readFixtureFile } from '../helpers.js';
 
 function createMemoryIo() {
   const stdout: string[] = [];
@@ -64,5 +64,44 @@ describe('CLI integration', () => {
     expect(JSON.parse(scanIo.stdout.join('\n')).context.repo.detectedLanguages).toEqual(
       expect.arrayContaining(['python']),
     );
+  });
+
+  it('validates compile source flags and supports GitHub issue JSON input', async () => {
+    const repoDir = await copyFixture('node-basic');
+    const noSourceIo = createMemoryIo();
+    expect(await runCli(['compile'], noSourceIo.io, repoDir)).toBe(1);
+    expect(noSourceIo.stderr.join('\n')).toContain('Provide exactly one compile source');
+
+    await writeFile(
+      path.join(repoDir, 'task.md'),
+      '# Add lint command\n',
+      'utf8',
+    );
+    await mkdir(path.join(repoDir, 'issues'), { recursive: true });
+    await writeFile(
+      path.join(repoDir, 'issues', 'contextforge-issue-101.json'),
+      await readFixtureFile('github', 'contextforge-issue-101.json'),
+      'utf8',
+    );
+
+    const multipleSourceIo = createMemoryIo();
+    expect(
+      await runCli(
+        ['compile', '--input', 'task.md', '--github-issue-json', 'issues/contextforge-issue-101.json'],
+        multipleSourceIo.io,
+        repoDir,
+      ),
+    ).toBe(1);
+    expect(multipleSourceIo.stderr.join('\n')).toContain('Received multiple compile source flags');
+
+    const githubJsonIo = createMemoryIo();
+    expect(
+      await runCli(
+        ['compile', '--github-issue-json', 'issues/contextforge-issue-101.json'],
+        githubJsonIo.io,
+        repoDir,
+      ),
+    ).toBe(0);
+    expect(githubJsonIo.stdout.join('\n')).toContain('Compiled task pack support-github-issue-sources-in-compile');
   });
 });

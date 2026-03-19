@@ -39,8 +39,16 @@ export async function runCli(argv: string[], io: CliIO = createDefaultIO(), cwd 
 
   program
     .command('compile')
-    .description('Compile a markdown task file into a task pack.')
-    .requiredOption('--input <file>', 'Path to the markdown issue, PRD, or task file.')
+    .description('Compile a markdown task file or GitHub issue into a task pack.')
+    .option('--input <file>', 'Path to the markdown issue, PRD, or task file.')
+    .option(
+      '--github-issue <url-or-ref>',
+      'GitHub issue URL or short ref in the form owner/repo#number.',
+    )
+    .option(
+      '--github-issue-json <path>',
+      'Path to an exported GitHub issue JSON payload for offline compilation.',
+    )
     .option('--title <title>', 'Override the task pack title.')
     .option('--json', 'Emit machine-readable JSON output.')
     .action(async (options) => runCompileCommand(runtime, options));

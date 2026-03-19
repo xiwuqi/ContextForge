@@ -1,0 +1,19 @@
+{
+  "url": "https://api.github.com/repos/xiwuqi/ContextForge/issues/101",
+  "repository_url": "https://api.github.com/repos/xiwuqi/ContextForge",
+  "html_url": "https://github.com/xiwuqi/ContextForge/issues/101",
+  "number": 101,
+  "title": "Support GitHub issue sources in compile",
+  "body": "## Objective\n\nMake `contextforge compile` accept GitHub issues directly.\n\n## Context\n\nDevelopers usually start from GitHub issues, not local markdown files. Extend the compile source loader, CLI flags, schema metadata, and documentation so the tool can ingest issue content without manual copy-paste.\n\n## Constraints\n\n- Keep the workflow local-first.\n- Do not add a hosted backend.\n- Keep GitHub fetching optional.\n\n## Validation\n\n- npm run build\n- npm run test\n- npm run lint\n\n## Done when\n\n- `contextforge compile` accepts a GitHub issue source.\n- Task packs include source metadata.\n- Documentation explains the new source flags.\n",
+  "labels": [
+    {
+      "name": "enhancement"
+    },
+    {
+      "name": "cli"
+    },
+    {
+      "name": "github"
+    }
+  ]
+}
