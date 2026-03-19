@@ -1,0 +1,26 @@
+name: Codex task runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt_file:
+        description: Repository path to the Codex prompt file
+        required: true
+        default: .github/codex/prompts/master-build-contextforge.md
+
+jobs:
+  codex:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run Codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt-file: ${{ github.event.inputs.prompt_file }}
+          output-file: codex-output.md
+          sandbox: workspace-write
+          safety-strategy: drop-sudo
