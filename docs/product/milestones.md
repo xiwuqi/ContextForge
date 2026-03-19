@@ -79,3 +79,18 @@ Exit criteria:
 - `compile` accepts exactly one source flag
 - public and authenticated issue fetching share the same normalized path
 - offline issue JSON compilation works without network access
+
+## Milestone 6: Export Claude Code
+
+Deliver:
+
+- `export claude` command
+- compact Claude Code task brief renderer
+- shared export helper that preserves Codex behavior
+- deterministic fixture coverage for Claude export output
+
+Exit criteria:
+
+- `export codex` remains backward compatible
+- `export claude` writes to `.contextforge/exports/claude/<slug>.md` by default
+- no `CLAUDE.md` or `.claude/*` memory files are auto-written

@@ -1,12 +1,12 @@
 # ContextForge
 
-ContextForge is a local-first CLI for turning a repository plus a markdown task description into a compact task-scoped context pack and a Codex-ready prompt file.
+ContextForge is a local-first CLI for turning a repository plus a task source into a compact task-scoped context pack and agent-ready export files for Codex and Claude Code.
 
 It exists to improve coding-agent setup, not to replace the agent. The tool focuses on four jobs:
 
 1. scan a repository
-2. compile markdown tasks into structured task packs
-3. export compact Codex prompts
+2. compile task sources into structured task packs
+3. export compact Codex and Claude Code prompts
 4. lint stale context and guidance
 
 ## Why it exists
@@ -30,6 +30,7 @@ contextforge init [--write-agents] [--json]
 contextforge scan [--json] [--max-depth 6]
 contextforge compile (--input <file> | --github-issue <url|owner/repo#number> | --github-issue-json <path>) [--title <title>] [--json]
 contextforge export codex --input <task-pack.json> [--output <file>]
+contextforge export claude --input <task-pack.json> [--output <file>]
 contextforge lint [--json] [--strict]
 ```
 
@@ -53,6 +54,10 @@ Codex prompt exports are written to `.github/codex/prompts/` by default:
 
 - `.github/codex/prompts/<slug>.md`
 
+Claude Code task brief exports are written to `.contextforge/exports/claude/` by default:
+
+- `.contextforge/exports/claude/<slug>.md`
+
 ## Quickstart
 
 1. Initialize repository context.
@@ -61,7 +66,7 @@ Codex prompt exports are written to `.github/codex/prompts/` by default:
 contextforge init
 ```
 
-2. Compile a task markdown file into a task pack.
+2. Compile a task source into a task pack.
 
 ```bash
 contextforge compile --input examples/issue-add-command.md
@@ -75,10 +80,11 @@ contextforge compile --github-issue owner/repo#123
 contextforge compile --github-issue-json tests/fixtures/github/contextforge-issue-101.json
 ```
 
-3. Export a Codex prompt from the generated task pack.
+3. Export an agent brief from the generated task pack.
 
 ```bash
 contextforge export codex --input .contextforge/task-packs/add-lint-command.json
+contextforge export claude --input .contextforge/task-packs/add-lint-command.json
 ```
 
 4. Lint the generated guidance for drift.
@@ -106,6 +112,28 @@ Task packs now include source metadata so downstream tooling can tell where the 
 - `source_title`
 - `source_labels`
 - `source_url`
+
+## Claude Code exports
+
+`contextforge export claude` writes a compact markdown task brief that is meant for Claude Code workflows:
+
+- paste the generated markdown directly into Claude Code
+- reference it with `@.contextforge/exports/claude/<slug>.md`
+- keep it alongside the task pack without writing to persistent Claude memory
+
+Example:
+
+```bash
+contextforge export claude --input .contextforge/task-packs/add-lint-command.json
+```
+
+This milestone does not auto-write any Claude project memory files, including:
+
+- `CLAUDE.md`
+- `.claude/CLAUDE.md`
+- `.claude/rules/*`
+- `.claude/settings.json`
+- `.claude/settings.local.json`
 
 ## Repository layout
 

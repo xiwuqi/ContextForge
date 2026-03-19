@@ -4,6 +4,7 @@ export const CONTEXT_MARKDOWN_FILE = `${CONTEXTFORGE_DIR}/context.md`;
 export const AGENTS_SUGGESTED_FILE = `${CONTEXTFORGE_DIR}/agents.suggested.md`;
 export const TASK_PACK_DIR = `${CONTEXTFORGE_DIR}/task-packs`;
 export const DEFAULT_PROMPTS_DIR = '.github/codex/prompts';
+export const DEFAULT_CLAUDE_EXPORTS_DIR = `${CONTEXTFORGE_DIR}/exports/claude`;
 export const DEFAULT_SCAN_MAX_DEPTH = 6;
 
 export const DEFAULT_IGNORED_DIRECTORIES = new Set([

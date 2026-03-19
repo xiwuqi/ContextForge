@@ -1,5 +1,12 @@
 import { Command } from 'commander';
-import { runCompileCommand, runExportCodexCommand, runInitCommand, runLintCommand, runScanCommand } from './commands/index.js';
+import {
+  runCompileCommand,
+  runExportClaudeCommand,
+  runExportCodexCommand,
+  runInitCommand,
+  runLintCommand,
+  runScanCommand,
+} from './commands/index.js';
 import { createDefaultIO, type CliIO, type CliRuntime } from './io.js';
 
 export async function runCli(argv: string[], io: CliIO = createDefaultIO(), cwd = process.cwd()): Promise<number> {
@@ -15,7 +22,7 @@ export async function runCli(argv: string[], io: CliIO = createDefaultIO(), cwd 
   const program = new Command();
   program
     .name('contextforge')
-    .description('Compile repository context and markdown tasks into Codex-ready task packs.')
+    .description('Compile repository context and task sources into agent-ready task packs.')
     .showHelpAfterError()
     .exitOverride()
     .configureOutput({
@@ -61,6 +68,13 @@ export async function runCli(argv: string[], io: CliIO = createDefaultIO(), cwd 
     .requiredOption('--input <file>', 'Path to the task pack JSON file.')
     .option('--output <file>', 'Optional output path. Defaults to .github/codex/prompts/<slug>.md.')
     .action(async (options) => runExportCodexCommand(runtime, options));
+
+  exportCommand
+    .command('claude')
+    .description('Export a task pack JSON file into a compact Claude Code task brief markdown file.')
+    .requiredOption('--input <file>', 'Path to the task pack JSON file.')
+    .option('--output <file>', 'Optional output path. Defaults to .contextforge/exports/claude/<slug>.md.')
+    .action(async (options) => runExportClaudeCommand(runtime, options));
 
   program
     .command('lint')

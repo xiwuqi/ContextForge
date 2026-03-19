@@ -19,7 +19,7 @@ function createMemoryIo() {
 }
 
 describe('CLI integration', () => {
-  it('runs init, compile, export codex, and lint on a fixture repo', async () => {
+  it('runs init, compile, export codex, export claude, and lint on a fixture repo', async () => {
     const repoDir = await copyFixture('node-basic');
     const taskPath = path.join(repoDir, 'task.md');
     await writeFile(
@@ -43,6 +43,15 @@ describe('CLI integration', () => {
       ),
     ).toBe(0);
 
+    const claudeIo = createMemoryIo();
+    expect(
+      await runCli(
+        ['export', 'claude', '--input', '.contextforge/task-packs/add-lint-command.json'],
+        claudeIo.io,
+        repoDir,
+      ),
+    ).toBe(0);
+
     const lintIo = createMemoryIo();
     expect(await runCli(['lint'], lintIo.io, repoDir)).toBe(0);
 
@@ -50,8 +59,14 @@ describe('CLI integration', () => {
       path.join(repoDir, '.github', 'codex', 'prompts', 'add-lint-command.md'),
       'utf8',
     );
+    const claudeBrief = await readFile(
+      path.join(repoDir, '.contextforge', 'exports', 'claude', 'add-lint-command.md'),
+      'utf8',
+    );
 
     expect(prompt).toContain('# Add lint command');
+    expect(claudeBrief).toContain('## Suggested Implementation Order');
+    expect(claudeIo.stdout.join('\n')).toContain('Wrote Claude brief to .contextforge/exports/claude/add-lint-command.md');
     expect(initIo.stdout.join('\n')).toContain('Initialized ContextForge');
   });
 

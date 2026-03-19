@@ -1,8 +1,6 @@
-import path from 'node:path';
 import { DEFAULT_PROMPTS_DIR } from '../utils/constants.js';
-import { readJsonFile, writeTextFile } from '../utils/filesystem.js';
-import { findRepositoryRoot, normalizeRelativePath, resolveFromRoot, slugify } from '../utils/paths.js';
-import { TaskPackSchema, type TaskPack } from '../schema/index.js';
+import { type TaskPack } from '../schema/index.js';
+import { exportTaskPackMarkdown } from './shared.js';
 
 export interface ExportCodexOptions {
   rootDir?: string;
@@ -59,19 +57,17 @@ export async function exportCodexPrompt(options: ExportCodexOptions): Promise<{
   prompt: string;
   taskPack: TaskPack;
 }> {
-  const rootDir = options.rootDir ? await findRepositoryRoot(options.rootDir) : await findRepositoryRoot(process.cwd());
-  const absoluteInputPath = path.resolve(rootDir, options.input);
-  const taskPack = TaskPackSchema.parse(await readJsonFile<TaskPack>(absoluteInputPath));
-  const outputPath = options.output
-    ? path.resolve(rootDir, options.output)
-    : resolveFromRoot(rootDir, `${DEFAULT_PROMPTS_DIR}/${slugify(taskPack.taskId || normalizeRelativePath(path.basename(absoluteInputPath, '.json')))}.md`);
-  const prompt = renderCodexPrompt(taskPack);
-
-  await writeTextFile(outputPath, `${prompt}\n`);
+  const result = await exportTaskPackMarkdown({
+    rootDir: options.rootDir,
+    input: options.input,
+    output: options.output,
+    defaultOutputDir: DEFAULT_PROMPTS_DIR,
+    render: renderCodexPrompt,
+  });
 
   return {
-    outputPath,
-    prompt,
-    taskPack,
+    outputPath: result.outputPath,
+    prompt: result.content,
+    taskPack: result.taskPack,
   };
 }
