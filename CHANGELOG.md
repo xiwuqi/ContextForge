@@ -11,6 +11,7 @@ All notable changes to ContextForge will be documented in this file.
 - Checked-in demo artifacts under `examples/demo/` for first-time readers.
 - Manual publish dry-run and package-content sanity checks for first npm release preparation.
 - Bootstrap-era root PRD archived under `docs/archive/bootstrap/` so `docs/product/` stays the public source of truth.
+- Versioned release artifact bundles under `.contextforge/releases/<version>/` for manual release handoff.
 
 ### Notes
 

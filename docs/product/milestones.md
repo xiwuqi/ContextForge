@@ -174,3 +174,19 @@ Exit criteria:
 - `npm run publish:dry-run` validates publishable package contents without publishing
 - `npm run release:check` includes the publish dry-run path
 - maintainers have a short checklist for manual GitHub and npm metadata steps
+
+## Milestone 12: Versioned Release Artifacts
+
+Deliver:
+
+- maintainer-facing `npm run release:artifacts`
+- versioned release bundle under `.contextforge/releases/<version>/`
+- generated draft release notes and handoff summary
+- manual release handoff documentation
+
+Exit criteria:
+
+- the current package version is used as the release bundle key
+- the bundle includes tarball, manifest, package file list, checksums, release notes, and summary
+- maintainers can inspect the bundle and complete only the remaining external manual steps
+- release docs stay honest about what is and is not automated

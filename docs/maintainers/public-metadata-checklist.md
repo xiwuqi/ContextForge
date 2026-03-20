@@ -12,6 +12,7 @@ Use this checklist for the manual GitHub and npm details that repository code ca
 ## First GitHub release draft
 
 - Draft release notes from `CHANGELOG.md`.
+- Start from `.contextforge/releases/<version>/release-notes.md` when a fresh handoff bundle exists.
 - Make the release title match the chosen version or release-candidate tag.
 - Confirm the notes describe the CLI honestly and do not imply automated publish or hosted infrastructure.
 
@@ -21,3 +22,4 @@ Use this checklist for the manual GitHub and npm details that repository code ca
 - Homepage, repository, bugs, and license links resolve correctly.
 - The package description and keywords match the current product positioning.
 - The install and quickstart examples still reflect the actual CLI surface.
+- The published version matches the handoff bundle version and tarball filename.

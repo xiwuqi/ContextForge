@@ -79,6 +79,14 @@ npm run publish:dry-run
 
 This runs `npm publish --dry-run`, verifies the publishable file set, and fails if non-runtime clutter leaks into the package.
 
+To generate a versioned release handoff bundle without publishing:
+
+```bash
+npm run release:artifacts
+```
+
+This writes a versioned bundle under `.contextforge/releases/<version>/` with the tarball, package file list, release-note draft, checksums, and a short handoff summary.
+
 ## Quickstart
 
 1. Initialize repository context.
@@ -199,7 +207,13 @@ Run a standalone publishability dry-run:
 npm run publish:dry-run
 ```
 
-`npm run release:check` runs build, test, lint, packaged smoke validation, the deterministic eval corpus, and the publish dry-run package sanity check.
+Generate the versioned release handoff bundle:
+
+```bash
+npm run release:artifacts
+```
+
+`npm run release:check` runs build, test, lint, packaged smoke validation, the deterministic eval corpus, and the publish dry-run package sanity check. `npm run release:artifacts` then reruns the safety checks, packs the current version, and writes the handoff bundle under `.contextforge/releases/<version>/`.
 
 ## Provider mode
 
@@ -226,6 +240,7 @@ npm run smoke:pack
 npm run eval:fixtures
 npm run publish:dry-run
 npm run release:check
+npm run release:artifacts
 npm run demo:refresh
 npm run format
 ```

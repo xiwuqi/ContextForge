@@ -42,7 +42,8 @@
     "eval:fixtures": "node ./scripts/eval-fixtures.mjs",
     "publish:dry-run": "node ./scripts/publish-dry-run.mjs",
     "demo:refresh": "node ./scripts/refresh-demo-assets.mjs",
-    "release:check": "node ./scripts/release-check.mjs"
+    "release:check": "node ./scripts/release-check.mjs",
+    "release:artifacts": "node ./scripts/release-artifacts.mjs"
   },
   "dependencies": {
     "commander": "^13.1.0",

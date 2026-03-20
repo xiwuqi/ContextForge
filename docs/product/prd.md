@@ -1,6 +1,6 @@
 # ContextForge PRD
 
-- Version: v0.2 step 7
+- Version: v0.2 step 8
 - Status: Release-candidate preparation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
@@ -79,6 +79,7 @@ Release-candidate onboarding:
 
 - `npm run release:check` runs the full first-release candidate validation set
 - `npm run publish:dry-run` validates npm publish readiness without publishing
+- `npm run release:artifacts` writes a versioned release handoff bundle under `.contextforge/releases/<version>/`
 - `examples/demo/` contains small checked-in representative outputs for first-time readers
 - `CHANGELOG.md` and maintainer release docs stay manual and honest about publish state
 
@@ -120,4 +121,5 @@ The implementation is done only when:
 8. deterministic evals cover task-pack and export usefulness,
 9. release-candidate docs and demo artifacts reflect the current product,
 10. publish dry-run and package-content sanity checks pass,
-11. the MVP stays within scope.
+11. versioned release handoff artifacts can be generated from the current package version,
+12. the MVP stays within scope.

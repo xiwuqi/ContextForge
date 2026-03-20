@@ -38,6 +38,7 @@ Before any public release candidate:
 - inspect `examples/demo/` and confirm the artifacts still look representative
 - refresh the demo assets with `npm run demo:refresh` if the checked-in outputs are stale
 - update `CHANGELOG.md` so the release-candidate state is honest and current
+- run `npm run release:artifacts` and inspect the generated bundle under `.contextforge/releases/<version>/`
 
 ## CI checks
 
@@ -53,6 +54,7 @@ Before any release action, confirm:
 Before a first public release, review:
 
 - `docs/maintainers/public-metadata-checklist.md`
+- `docs/maintainers/manual-release-handoff.md`
 
 ## Manual publish boundary
 
