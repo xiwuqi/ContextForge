@@ -1,8 +1,12 @@
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 import { runCli } from '../../src/cli/app.js';
 import { copyFixture, readFixtureFile } from '../helpers.js';
+
+const require = createRequire(import.meta.url);
+const packageJson = require('../../package.json') as { version: string };
 
 function createMemoryIo() {
   const stdout: string[] = [];
@@ -19,6 +23,12 @@ function createMemoryIo() {
 }
 
 describe('CLI integration', () => {
+  it('prints the package version', async () => {
+    const versionIo = createMemoryIo();
+    expect(await runCli(['--version'], versionIo.io, process.cwd())).toBe(0);
+    expect(versionIo.stdout.join('\n').trim()).toBe(packageJson.version);
+  });
+
   it('runs init, compile, export codex, export claude, and lint on a fixture repo', async () => {
     const repoDir = await copyFixture('node-basic');
     const taskPath = path.join(repoDir, 'task.md');

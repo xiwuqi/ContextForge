@@ -1,6 +1,6 @@
 # ContextForge PRD
 
-- Version: v0.2 step 2
+- Version: v0.2 step 3
 - Status: Ready for implementation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
@@ -58,6 +58,12 @@ Claude export:
 
 - `.contextforge/exports/claude/<slug>.md`
 
+Distribution readiness:
+
+- `npm pack` produces a usable CLI tarball
+- the tarball installs into a temporary project without publish automation
+- CI validates build, test, lint, and packaged smoke execution
+
 ## Required task pack fields
 
 - task id
@@ -91,4 +97,6 @@ The implementation is done only when:
 3. lint passes,
 4. docs reflect actual behavior,
 5. generated markdown is compact and readable,
-6. the MVP stays within scope.
+6. the packaged CLI installs and runs from a packed tarball,
+7. CI covers validation and smoke packaging,
+8. the MVP stays within scope.

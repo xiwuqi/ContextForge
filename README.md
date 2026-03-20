@@ -15,13 +15,27 @@ Coding agents fail early when they start with incomplete repository context, vag
 
 ## Installation
 
+ContextForge targets Node.js 20 and newer. CI validates the CLI on Node 20 and Node 22.
+
+### Local development install
+
 ```bash
-npm install
+npm ci
 npm run build
 npm link
 ```
 
 If you do not want to link the CLI globally, use `node dist/cli/index.js` after building.
+
+### Packaged local tarball smoke test
+
+```bash
+npm run smoke:pack
+```
+
+This command builds a tarball with `npm pack`, installs it into a temporary project without using `npm link`, and runs a real `contextforge scan --json` smoke check against a fixture repository.
+
+The repository does not publish to npm automatically today. Once published, the intended install flow can be documented as a standard npm install path, but this repo currently stops at local pack-and-smoke validation.
 
 ## Commands
 
@@ -153,8 +167,10 @@ tests/
 ## Development
 
 ```bash
+npm ci
 npm run build
 npm run test
 npm run lint
+npm run smoke:pack
 npm run format
 ```

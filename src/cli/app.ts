@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module';
 import { Command } from 'commander';
 import {
   runCompileCommand,
@@ -8,6 +9,9 @@ import {
   runScanCommand,
 } from './commands/index.js';
 import { createDefaultIO, type CliIO, type CliRuntime } from './io.js';
+
+const require = createRequire(import.meta.url);
+const packageJson = require('../../package.json') as { version: string };
 
 export async function runCli(argv: string[], io: CliIO = createDefaultIO(), cwd = process.cwd()): Promise<number> {
   let exitCode = 0;
@@ -23,6 +27,7 @@ export async function runCli(argv: string[], io: CliIO = createDefaultIO(), cwd 
   program
     .name('contextforge')
     .description('Compile repository context and task sources into agent-ready task packs.')
+    .version(packageJson.version)
     .showHelpAfterError()
     .exitOverride()
     .configureOutput({

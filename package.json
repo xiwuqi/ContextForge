@@ -1,9 +1,26 @@
 {
   "name": "contextforge",
   "version": "0.1.0",
-  "description": "Local-first CLI for turning repository context and task markdown into Codex-ready task packs.",
+  "description": "Local-first CLI that compiles repository context and task sources into agent-ready briefs for Codex and Claude Code.",
   "license": "MIT",
   "type": "module",
+  "keywords": [
+    "cli",
+    "local-first",
+    "developer-tools",
+    "repository-context",
+    "coding-agents",
+    "codex",
+    "claude-code"
+  ],
+  "homepage": "https://github.com/xiwuqi/ContextForge#readme",
+  "bugs": {
+    "url": "https://github.com/xiwuqi/ContextForge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiwuqi/ContextForge.git"
+  },
   "bin": {
     "contextforge": "./dist/cli/index.js"
   },
@@ -15,9 +32,11 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
     "test": "vitest run",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "smoke:pack": "node ./scripts/smoke-pack.mjs"
   },
   "dependencies": {
     "commander": "^13.1.0",

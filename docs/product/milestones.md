@@ -94,3 +94,19 @@ Exit criteria:
 - `export codex` remains backward compatible
 - `export claude` writes to `.contextforge/exports/claude/<slug>.md` by default
 - no `CLAUDE.md` or `.claude/*` memory files are auto-written
+
+## Milestone 7: Release Hardening
+
+Deliver:
+
+- hardened package metadata for a public CLI
+- `prepack` and a deterministic packaged smoke script
+- CI validation on Node 20 and Node 22
+- package smoke verification from a local tarball install
+
+Exit criteria:
+
+- `npm pack` succeeds without manual cleanup steps
+- the packed tarball installs into a temporary project and runs a real CLI command
+- CI covers build, test, lint, and packaged smoke validation
+- docs explain the local install and release-readiness story without implying automatic publish
