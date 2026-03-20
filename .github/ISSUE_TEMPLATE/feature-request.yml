@@ -1,0 +1,82 @@
+name: Feature request
+description: Propose a workflow improvement for ContextForge.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start with the workflow pain, not the implementation idea. This helps keep requests grounded in real repository-to-agent context work.
+  - type: input
+    id: contextforge-version
+    attributes:
+      label: ContextForge version
+      description: Version used when you ran into this gap.
+      placeholder: 0.1.0
+    validations:
+      required: false
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      placeholder: 20.19.0
+    validations:
+      required: false
+  - type: dropdown
+    id: workflow-area
+    attributes:
+      label: Workflow area
+      options:
+        - init / scan
+        - compile
+        - export
+        - lint
+        - docs / examples
+        - packaging / release workflow
+        - other
+    validations:
+      required: true
+  - type: dropdown
+    id: source-type
+    attributes:
+      label: Relevant task source
+      options:
+        - Local markdown input (`--input`)
+        - Live GitHub issue (`--github-issue`)
+        - GitHub issue JSON (`--github-issue-json`)
+        - Multiple source types
+        - Not applicable
+    validations:
+      required: true
+  - type: checkboxes
+    id: export-targets
+    attributes:
+      label: Relevant export targets
+      options:
+        - label: Codex
+        - label: Claude Code
+        - label: Cursor
+        - label: Not export-related
+  - type: textarea
+    id: workflow-pain
+    attributes:
+      label: Workflow pain
+      description: What are you trying to do, and where does the current workflow fall short?
+      placeholder: I can compile the task pack, but the current export flow still leaves me doing...
+    validations:
+      required: true
+  - type: textarea
+    id: current-workaround
+    attributes:
+      label: Current workaround
+      placeholder: Today I work around this by...
+    validations:
+      required: false
+  - type: textarea
+    id: requested-outcome
+    attributes:
+      label: Requested outcome
+      description: Describe the smallest useful improvement. Concrete command or output examples help.
+      placeholder: It would help if ContextForge could...
+    validations:
+      required: true
+

@@ -137,6 +137,13 @@ contextforge lint [--json] [--strict]
 - `docs/maintainers/first-public-release.md`
 - `docs/maintainers/manual-release-handoff.md`
 - `docs/maintainers/public-metadata-checklist.md`
+- `docs/maintainers/feedback-triage.md`
+
+## 反馈与贡献
+
+- 通过 GitHub 内置 issue 模板提交 bug report、feature request 或 workflow feedback。
+- 在发起 pull request 之前，先阅读 `CONTRIBUTING.md`，了解本地开发、验证命令和 scope discipline。
+- 涉及安全问题时请阅读 `SECURITY.md`，不要在公开 issue 中直接披露可利用细节。
 
 ## 开发命令
 

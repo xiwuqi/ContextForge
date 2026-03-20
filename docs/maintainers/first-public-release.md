@@ -12,6 +12,7 @@ Use this guide when ContextForge is ready for its first public release candidate
 - `CHANGELOG.md` is up to date and honest about release state.
 - package metadata in `package.json` still matches the current CLI surface.
 - repo-root source-of-truth docs are clear and stale bootstrap artifacts are archived or removed.
+- issue templates, `CONTRIBUTING.md`, `SECURITY.md`, and feedback triage guidance are present and current.
 
 ## Run the release-candidate checks
 

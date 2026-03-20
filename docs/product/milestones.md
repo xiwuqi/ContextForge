@@ -206,3 +206,19 @@ Exit criteria:
 - first-time readers can understand the workflow and output layout quickly
 - `.github/codex/prompts/` keeps only active workflow or intentional product-facing files
 - milestone build-history prompts are archived and documented clearly
+
+## Milestone 14: Community Health and Feedback Intake
+
+Deliver:
+
+- GitHub issue forms for bug reports, feature requests, and workflow feedback
+- issue template config plus a compact pull request template
+- practical `CONTRIBUTING.md` and `SECURITY.md` guides
+- maintainer-facing feedback triage guidance
+
+Exit criteria:
+
+- early users have clear paths for reporting bugs, asking workflow questions, and proposing features
+- contribution expectations stay lightweight and aligned with the local-first CLI scope
+- security-sensitive issues have an honest reporting path without overstating formal process
+- README links the feedback and contribution paths without becoming bloated

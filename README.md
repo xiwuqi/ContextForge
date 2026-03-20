@@ -137,6 +137,13 @@ contextforge lint [--json] [--strict]
 - `docs/maintainers/first-public-release.md`
 - `docs/maintainers/manual-release-handoff.md`
 - `docs/maintainers/public-metadata-checklist.md`
+- `docs/maintainers/feedback-triage.md`
+
+## Feedback and contributing
+
+- Open a GitHub issue with the built-in bug report, feature request, or workflow feedback template.
+- Use `CONTRIBUTING.md` for local setup, validation expectations, and scope discipline before opening a pull request.
+- Use `SECURITY.md` for security-sensitive reports. Do not post exploit details in a public issue.
 
 ## Development
 

@@ -14,6 +14,7 @@ All notable changes to ContextForge will be documented in this file.
 - Versioned release artifact bundles under `.contextforge/releases/<version>/` for manual release handoff.
 - English and Simplified Chinese READMEs plus lightweight SVG diagrams for first-visit onboarding.
 - Internal milestone Codex prompts archived out of `.github/codex/prompts/` so the default Codex output directory stays clean.
+- GitHub issue and pull request templates plus lightweight contributing, security, and triage docs for early external users.
 
 ### Notes
 

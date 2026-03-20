@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+contact_links:
+  - name: README and quickstart
+    url: https://github.com/xiwuqi/ContextForge/blob/main/README.md
+    about: Start here for installation, quickstart, demo assets, and CLI command usage.
+  - name: Contributing guide
+    url: https://github.com/xiwuqi/ContextForge/blob/main/CONTRIBUTING.md
+    about: Read the local setup, validation, and scope guidelines before opening a pull request.
+  - name: Security reporting guidance
+    url: https://github.com/xiwuqi/ContextForge/blob/main/SECURITY.md
+    about: Use this path for security-sensitive reports instead of posting exploit details publicly.
+

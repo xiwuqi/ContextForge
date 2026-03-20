@@ -1,6 +1,6 @@
 # ContextForge PRD
 
-- Version: v0.2 step 9
+- Version: v0.2 step 10
 - Status: Release-candidate preparation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
@@ -85,6 +85,7 @@ Release-candidate onboarding:
 - archived milestone Codex prompts live outside `.github/codex/prompts/` so the default export directory stays product-facing
 - `examples/demo/` contains small checked-in representative outputs for first-time readers
 - `CHANGELOG.md` and maintainer release docs stay manual and honest about publish state
+- GitHub issue forms, a pull request template, `CONTRIBUTING.md`, `SECURITY.md`, and maintainer feedback triage guidance support early external users without widening product scope
 
 ## Required task pack fields
 

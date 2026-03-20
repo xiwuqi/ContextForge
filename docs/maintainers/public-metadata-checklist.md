@@ -6,6 +6,7 @@ Use this checklist for the manual GitHub and npm details that repository code ca
 
 - About text matches the README opening value proposition.
 - The README language switcher and linked `README.zh-CN.md` render correctly.
+- The issue template chooser, `CONTRIBUTING.md`, and `SECURITY.md` are easy to find from the public repository view.
 - Topics reflect the real current product, for example: `cli`, `local-first`, `coding-agents`, `codex`, `claude-code`, `cursor`, `typescript`.
 - Website/homepage points to the repository README or another deliberate public landing page.
 - The pinned repository description does not imply unsupported agents or hosted features.

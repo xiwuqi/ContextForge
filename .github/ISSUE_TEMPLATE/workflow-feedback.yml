@@ -1,0 +1,80 @@
+name: Workflow feedback
+description: Ask a usage question or share feedback on the current workflow.
+title: "[Workflow]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for workflow questions, confusing behavior, or feedback that does not clearly fit bug vs feature request yet.
+  - type: input
+    id: contextforge-version
+    attributes:
+      label: ContextForge version
+      placeholder: 0.1.0
+    validations:
+      required: false
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      placeholder: 20.19.0
+    validations:
+      required: false
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: false
+  - type: dropdown
+    id: source-type
+    attributes:
+      label: Task source used
+      options:
+        - Local markdown input (`--input`)
+        - Live GitHub issue (`--github-issue`)
+        - GitHub issue JSON (`--github-issue-json`)
+        - Multiple source types
+        - Not applicable
+    validations:
+      required: true
+  - type: dropdown
+    id: export-target
+    attributes:
+      label: Export target used
+      options:
+        - Not applicable
+        - Codex
+        - Claude Code
+        - Cursor
+        - Multiple targets
+    validations:
+      required: true
+  - type: input
+    id: command-run
+    attributes:
+      label: Command or workflow tried
+      placeholder: contextforge export cursor --input .contextforge/task-packs/example.json
+    validations:
+      required: true
+  - type: textarea
+    id: question-or-feedback
+    attributes:
+      label: Question or feedback
+      description: What was confusing, missing, or unexpectedly hard in the current workflow?
+      placeholder: I was not sure whether I should...
+    validations:
+      required: true
+  - type: textarea
+    id: desired-outcome
+    attributes:
+      label: Helpful answer or outcome
+      placeholder: It would help if the docs clarified...
+    validations:
+      required: false
+

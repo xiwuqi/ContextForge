@@ -39,6 +39,7 @@ Before any public release candidate:
 - refresh the demo assets with `npm run demo:refresh` if the checked-in outputs are stale
 - update `CHANGELOG.md` so the release-candidate state is honest and current
 - run `npm run release:artifacts` and inspect the generated bundle under `.contextforge/releases/<version>/`
+- confirm the GitHub issue templates, pull request template, `CONTRIBUTING.md`, and `SECURITY.md` still match the current workflow
 
 ## CI checks
 
