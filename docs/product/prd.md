@@ -1,7 +1,7 @@
 # ContextForge PRD
 
-- Version: v0.2 step 10
-- Status: Release-candidate preparation
+- Version: v0.2 step 11
+- Status: Manual release automation preparation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
 - Primary integration targets: Codex, Claude Code, and Cursor
@@ -84,8 +84,10 @@ Release-candidate onboarding:
 - lightweight SVG diagrams under `docs/assets/` explain the workflow and output layout
 - archived milestone Codex prompts live outside `.github/codex/prompts/` so the default export directory stays product-facing
 - `examples/demo/` contains small checked-in representative outputs for first-time readers
-- `CHANGELOG.md` and maintainer release docs stay manual and honest about publish state
+- `CHANGELOG.md` stays manual and honest about publish state before any release workflow dispatch
 - GitHub issue forms, a pull request template, `CONTRIBUTING.md`, `SECURITY.md`, and maintainer feedback triage guidance support early external users without widening product scope
+- a manual-dispatch GitHub Actions release workflow can sync repo metadata, create the GitHub Release, publish to npm, and verify the result when permissions and credentials are configured
+- checked-in repo metadata config and release-automation docs define the required external setup instead of assuming hidden settings
 
 ## Required task pack fields
 

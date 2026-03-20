@@ -1,0 +1,116 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version. Must match package.json exactly.
+        required: true
+        type: string
+      npm_tag:
+        description: npm dist-tag to publish under.
+        required: true
+        default: latest
+        type: string
+      publish_to_npm:
+        description: Publish the generated tarball to npm.
+        required: true
+        default: true
+        type: boolean
+      create_github_release:
+        description: Create the GitHub Release and upload release assets.
+        required: true
+        default: true
+        type: boolean
+      sync_repo_metadata:
+        description: Sync repository description, homepage, and topics from checked-in config.
+        required: true
+        default: true
+        type: boolean
+      prerelease:
+        description: Mark the GitHub Release as a prerelease.
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+      RELEASE_NPM_TAG: ${{ inputs.npm_tag }}
+      RELEASE_PRERELEASE: ${{ inputs.prerelease }}
+      RELEASE_CREATE_GITHUB: ${{ inputs.create_github_release }}
+      RELEASE_PUBLISH_NPM: ${{ inputs.publish_to_npm }}
+      RELEASE_SYNC_METADATA: ${{ inputs.sync_repo_metadata }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release preflight
+        run: node ./scripts/release-automation.mjs preflight --version "$RELEASE_VERSION"
+
+      - name: Release candidate checks
+        run: npm run release:check
+
+      - name: Generate release artifacts
+        run: npm run release:artifacts
+
+      - name: Sync repository metadata
+        if: inputs.sync_repo_metadata
+        env:
+          GH_TOKEN: ${{ secrets.REPO_METADATA_TOKEN != '' && secrets.REPO_METADATA_TOKEN || github.token }}
+        run: |
+          node ./scripts/release-automation.mjs sync-metadata \
+            --repo "$GITHUB_REPOSITORY"
+
+      - name: Create GitHub Release
+        if: inputs.create_github_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node ./scripts/release-automation.mjs github-release \
+            --version "$RELEASE_VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --prerelease "$RELEASE_PRERELEASE"
+
+      - name: Publish to npm
+        if: inputs.publish_to_npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          node ./scripts/release-automation.mjs npm-publish \
+            --version "$RELEASE_VERSION" \
+            --npm-tag "$RELEASE_NPM_TAG"
+
+      - name: Verify release state
+        if: ${{ success() && (inputs.sync_repo_metadata || inputs.create_github_release || inputs.publish_to_npm) }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          node ./scripts/release-automation.mjs verify \
+            --version "$RELEASE_VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --prerelease "$RELEASE_PRERELEASE" \
+            --metadata-synced "$RELEASE_SYNC_METADATA" \
+            --release-created "$RELEASE_CREATE_GITHUB" \
+            --npm-published "$RELEASE_PUBLISH_NPM" \
+            --npm-tag "$RELEASE_NPM_TAG"

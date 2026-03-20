@@ -222,3 +222,19 @@ Exit criteria:
 - contribution expectations stay lightweight and aligned with the local-first CLI scope
 - security-sensitive issues have an honest reporting path without overstating formal process
 - README links the feedback and contribution paths without becoming bloated
+
+## Milestone 15: First Public Release Automation
+
+Deliver:
+
+- manual-dispatch GitHub Actions release workflow
+- checked-in repository metadata config for description, homepage, and topics
+- release automation helpers for preflight, metadata sync, GitHub Release creation, npm publish, and verification
+- maintainer docs for workflow permissions, npm publish setup, and release checklist execution
+
+Exit criteria:
+
+- release automation stays manual-trigger only and does not run on push
+- the workflow validates package version and changelog readiness before release actions
+- repository metadata, GitHub Release assets, and npm publish can be automated when credentials are configured
+- docs stay honest about which setup remains external to the repository

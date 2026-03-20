@@ -45,6 +45,34 @@ export function extractSectionBullets(markdown, sectionHeading) {
   return bullets;
 }
 
+export function extractVersionHighlights(changelog, version) {
+  const lines = changelog.split(/\r?\n/);
+  const headingPattern = new RegExp(`^##\\s+v?${escapeRegExp(version)}(?:\\s+-\\s+\\d{4}-\\d{2}-\\d{2})?\\s*$`);
+  const startIndex = lines.findIndex((line) => headingPattern.test(line.trim()));
+
+  if (startIndex === -1) {
+    return [];
+  }
+
+  const highlights = [];
+  for (let index = startIndex + 1; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    if (line.startsWith('## ')) {
+      break;
+    }
+    if (line.length === 0 || line.startsWith('### ')) {
+      continue;
+    }
+    if (line.startsWith('- ')) {
+      highlights.push(line.slice(2).trim());
+      continue;
+    }
+    highlights.push(line);
+  }
+
+  return highlights;
+}
+
 export function extractIntroParagraph(readme) {
   const lines = readme.split(/\r?\n/);
   const bodyLines = lines.slice(1);
@@ -75,7 +103,8 @@ export function extractTitle(readme) {
 export function buildReleaseNotes({ packageName, version, readme, changelog }) {
   const title = extractTitle(readme) ?? packageName;
   const summary = extractIntroParagraph(readme);
-  const highlights = extractSectionBullets(changelog, '### Release-candidate scope');
+  const highlights = extractVersionHighlights(changelog, version);
+  const fallbackHighlights = extractSectionBullets(changelog, '### Release-candidate scope');
   const exports = extractSupportedExports(readme);
 
   const sections = [
@@ -89,8 +118,8 @@ export function buildReleaseNotes({ packageName, version, readme, changelog }) {
     '',
     '## Included in this draft release',
     '',
-    ...(highlights.length > 0
-      ? highlights.map((entry) => `- ${entry}`)
+    ...((highlights.length > 0 ? highlights : fallbackHighlights).length > 0
+      ? (highlights.length > 0 ? highlights : fallbackHighlights).map((entry) => `- ${entry}`)
       : ['- Local-first CLI release candidate with repository scan, task-pack compile, and agent brief export workflows.']),
     '',
     '## Supported exports',
@@ -105,14 +134,17 @@ export function buildReleaseNotes({ packageName, version, readme, changelog }) {
     '## Manual steps remaining',
     '',
     '- Review this draft and `CHANGELOG.md`.',
-    '- Update GitHub About text, topics, and homepage if needed.',
-    '- Create the git tag manually.',
-    '- Draft the GitHub Release manually.',
-    '- Run `npm publish` manually when ready.',
-    '- Verify the npm package page after publish.',
+    '- Confirm the release automation prerequisites and repository settings are configured.',
+    '- Trigger the manual GitHub Actions release workflow when ready.',
+    '- If metadata sync or npm publish credentials are not configured, complete those steps manually.',
+    '- Verify the GitHub Release and npm package page after publish.',
   ];
 
   return `${sections.join('\n')}\n`;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 export function buildReleaseManifest({
@@ -164,13 +196,11 @@ export function buildSummary({
     `Release notes: ${releaseNotesPath}`,
     `Checksums: ${checksumsPath}`,
     '',
-    'Manual steps remaining:',
+    'Next steps:',
     '- Review release-notes.md and CHANGELOG.md',
-    '- Update GitHub About text, topics, and homepage if needed',
-    '- Create the version tag manually',
-    '- Draft the GitHub Release manually',
-    '- Run npm publish manually when ready',
-    '- Verify the npm package page after publish',
+    '- Confirm release workflow permissions, metadata sync token, and npm publishing setup',
+    '- Trigger the manual GitHub Actions release workflow when ready',
+    '- If the workflow cannot perform a step, complete only that remaining step manually',
   ];
 
   return `${lines.join('\n')}\n`;

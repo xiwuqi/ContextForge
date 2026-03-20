@@ -2,12 +2,15 @@
 
 Use this guide when ContextForge is ready for its first public release candidate or first published release.
 
+If you want the shortest actionable list, start with `docs/maintainers/first-public-release-checklist.md`. Use this document for the surrounding context and decision points.
+
 ## What should already be true
 
 - CI is green on the current branch.
 - `npm run release:check` passes locally.
 - `npm run publish:dry-run` passes locally on its own.
 - `npm run release:artifacts` generates a clean bundle for the current version.
+- the manual-dispatch GitHub Actions release workflow is configured or intentionally disabled for the missing external prerequisites.
 - `examples/demo/` still reflects the current product behavior.
 - `CHANGELOG.md` is up to date and honest about release state.
 - package metadata in `package.json` still matches the current CLI surface.
@@ -34,6 +37,8 @@ When you want the versioned release handoff bundle, run:
 ```bash
 npm run release:artifacts
 ```
+
+When the version, changelog, permissions, and npm setup are ready, trigger the release workflow in GitHub Actions instead of recreating the publish steps by hand.
 
 ## Inspect the demo assets
 
@@ -70,13 +75,13 @@ The repository currently keeps versioning manual. Before any publish:
 
 ## Manual publish later, if desired
 
-This repository does not publish automatically. If a maintainer chooses to publish later, treat it as a separate deliberate action from a clean checkout after the checks above.
+This repository does not publish automatically on push. The preferred path is a deliberate workflow dispatch after the checks above.
 
 Typical manual steps later may include:
 
 - `npm pack` one last time and inspect the tarball
-- create a git tag only when you are satisfied with the release contents
-- run `npm publish` manually when you are authenticated and ready
+- trigger the release workflow with the exact package version once you are satisfied with the release contents
+- use `docs/maintainers/npm-publish-guide.md` if npm trusted publishing or fallback token auth is not yet configured
 - update the GitHub About text, topics, homepage, and first release draft using `docs/maintainers/public-metadata-checklist.md`
 - review the bundle contents and release-note draft described in `docs/maintainers/manual-release-handoff.md`
 
@@ -84,6 +89,5 @@ Typical manual steps later may include:
 
 - version selection
 - changelog curation
-- git tags
-- npm publish
-- any GitHub release notes or announcement copy
+- deciding whether to dispatch the workflow at all
+- any release-note editing or announcement copy beyond the generated draft

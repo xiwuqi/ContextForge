@@ -1,0 +1,15 @@
+{
+  "description": "Local-first repository-to-agent context CLI for Codex, Claude Code, and Cursor.",
+  "homepage": "https://github.com/xiwuqi/ContextForge#readme",
+  "topics": [
+    "cli",
+    "local-first",
+    "repository-context",
+    "coding-agents",
+    "codex",
+    "claude-code",
+    "cursor",
+    "typescript"
+  ]
+}
+

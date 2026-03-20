@@ -101,7 +101,9 @@ npm run release:check
 npm run release:artifacts
 ```
 
-该命令会在 `.contextforge/releases/<version>/` 下生成 tarball、包文件清单、release notes 草稿、checksums 和简短的人工交接说明。
+该命令会在 `.contextforge/releases/<version>/` 下生成 tarball、包文件清单、release notes 草稿、checksums 和简短的人工交接说明，也可作为 workflow dispatch 前的审阅输入。
+
+之后维护者可以在 version、changelog、仓库权限和 npm publish 配置都准备好后，手动触发 GitHub Actions release workflow。它不会在 push 时自动运行。
 
 ## CLI 命令
 
@@ -127,7 +129,7 @@ contextforge lint [--json] [--strict]
 - 不做托管 SaaS 或数据库
 - 不依赖浏览器 UI 或浏览器自动化
 - 不要求核心流程必须有 API key
-- 不自动执行 npm publish 或 GitHub Release 创建
+- 不会在 push 时自动发版、静默 publish，或绕过维护者审查
 - 不自动写入 `CLAUDE.md`、`.claude/*`、`.cursor/rules/*` 或旧版 `.cursorrules`
 - 不引入重型 RAG、模型训练或后台任务系统
 
@@ -135,8 +137,11 @@ contextforge lint [--json] [--strict]
 
 - `docs/maintainers/release-checklist.md`
 - `docs/maintainers/first-public-release.md`
+- `docs/maintainers/first-public-release-checklist.md`
 - `docs/maintainers/manual-release-handoff.md`
+- `docs/maintainers/npm-publish-guide.md`
 - `docs/maintainers/public-metadata-checklist.md`
+- `docs/maintainers/release-automation.md`
 - `docs/maintainers/feedback-triage.md`
 
 ## 反馈与贡献

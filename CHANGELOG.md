@@ -15,8 +15,9 @@ All notable changes to ContextForge will be documented in this file.
 - English and Simplified Chinese READMEs plus lightweight SVG diagrams for first-visit onboarding.
 - Internal milestone Codex prompts archived out of `.github/codex/prompts/` so the default Codex output directory stays clean.
 - GitHub issue and pull request templates plus lightweight contributing, security, and triage docs for early external users.
+- Manual-dispatch release automation for repo metadata sync, GitHub Release creation, npm publish, and post-release verification.
 
 ### Notes
 
 - No npm package has been published from this changelog yet.
-- Version selection, tagging, and any future publish remain manual maintainer decisions.
+- Version selection and changelog readiness remain explicit maintainer decisions before any workflow dispatch.

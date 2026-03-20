@@ -101,7 +101,9 @@ Versioned release handoff bundle:
 npm run release:artifacts
 ```
 
-This writes a versioned bundle under `.contextforge/releases/<version>/` with the tarball, package file list, release-note draft, checksums, and a short summary for manual release handoff.
+This writes a versioned bundle under `.contextforge/releases/<version>/` with the tarball, package file list, release-note draft, checksums, and a short summary for manual release handoff or workflow dispatch review.
+
+Maintainers can then trigger the manual GitHub Actions release workflow once the version, changelog, repository permissions, and npm publishing setup are ready. It does not run on push.
 
 ## CLI surface
 
@@ -127,7 +129,7 @@ contextforge lint [--json] [--strict]
 - run a hosted SaaS or database
 - depend on a browser UI or browser automation
 - require an API key for the core workflow
-- automate npm publish or GitHub release creation
+- auto-release on push, silently publish, or bypass maintainer review
 - auto-write `CLAUDE.md`, `.claude/*`, `.cursor/rules/*`, or legacy `.cursorrules`
 - replace agent judgment with a heavy RAG stack or model training pipeline
 
@@ -135,8 +137,11 @@ contextforge lint [--json] [--strict]
 
 - `docs/maintainers/release-checklist.md`
 - `docs/maintainers/first-public-release.md`
+- `docs/maintainers/first-public-release-checklist.md`
 - `docs/maintainers/manual-release-handoff.md`
+- `docs/maintainers/npm-publish-guide.md`
 - `docs/maintainers/public-metadata-checklist.md`
+- `docs/maintainers/release-automation.md`
 - `docs/maintainers/feedback-triage.md`
 
 ## Feedback and contributing

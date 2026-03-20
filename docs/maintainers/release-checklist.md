@@ -1,6 +1,6 @@
 # Release checklist
 
-ContextForge is not published automatically by this repository. Use this checklist to verify release readiness before any manual npm publish decision.
+ContextForge does not release on push automatically. Use this checklist before any manual-dispatch release workflow or equivalent manual release decision.
 
 ## Pre-release validation
 
@@ -19,6 +19,16 @@ npm run release:check
 - `npm run smoke:pack`
 - `npm run eval:fixtures`
 - `npm run publish:dry-run`
+
+## Release automation prerequisites
+
+Before using `.github/workflows/release.yml`, confirm:
+
+- `package.json` version matches the intended release version
+- `CHANGELOG.md` contains a real versioned entry for that release instead of only `Unreleased`
+- GitHub Actions workflow permissions allow write access to contents
+- npm trusted publishing is configured, or an `NPM_TOKEN` secret is available for fallback publishing
+- `REPO_METADATA_TOKEN` is configured if you want the workflow to sync description, homepage, and topics
 
 ## Packaging checks
 
@@ -56,7 +66,9 @@ Before a first public release, review:
 
 - `docs/maintainers/public-metadata-checklist.md`
 - `docs/maintainers/manual-release-handoff.md`
+- `docs/maintainers/release-automation.md`
+- `docs/maintainers/npm-publish-guide.md`
 
 ## Manual publish boundary
 
-This repository stops at release-candidate readiness. Version choice, git tags, npm publish, and any release notes outside `CHANGELOG.md` remain manual maintainer actions.
+Version choice and changelog readiness remain manual maintainer actions. The repository can automate the rest only when the required workflow permissions, GitHub token scope, and npm publishing setup are configured correctly.

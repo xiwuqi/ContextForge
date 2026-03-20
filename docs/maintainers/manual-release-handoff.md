@@ -1,6 +1,6 @@
 # Manual release handoff
 
-Use this workflow when a maintainer wants a concrete release bundle for the current package version without automating tags, GitHub Releases, or npm publish.
+Use this workflow when a maintainer wants a concrete release bundle for the current package version. The bundle is still the source of truth even when the GitHub Actions release workflow performs the tag, GitHub Release, and npm publish steps.
 
 ## Generate the bundle
 
@@ -26,7 +26,7 @@ Review these files before any public release action:
 - `summary.txt`
 - the packed tarball
 
-The bundle is for maintainer review. It does not publish anything, create tags, or call GitHub APIs.
+The bundle is for maintainer review and workflow input. Generating it does not publish anything, create tags, or call GitHub APIs.
 
 ## Review the release notes
 
@@ -42,17 +42,16 @@ Check that it:
 
 After reviewing the bundle:
 
-1. update GitHub About text, topics, and homepage if needed
-2. create the version tag manually
-3. draft the GitHub Release manually
-4. run `npm publish` manually when ready
-5. verify the npm package page and links after publish
+1. make sure `.github/release/repo-metadata.json`, `package.json`, and `CHANGELOG.md` are ready in git
+2. confirm the release workflow permissions and secrets described in `docs/maintainers/release-automation.md`
+3. trigger the manual-dispatch release workflow
+4. if metadata sync or npm publish credentials are not configured, complete only those missing steps manually
+5. verify the GitHub Release and npm package page after publish
 
 Use `docs/maintainers/public-metadata-checklist.md` for the GitHub and npm page checks.
 
 ## What this repo does not automate
 
-- git tag creation
-- GitHub Release creation
-- npm publish
+- version selection
 - changelog curation beyond the checked-in source files
+- secret or permission setup outside the repository
