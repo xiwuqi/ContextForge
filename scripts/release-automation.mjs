@@ -6,14 +6,19 @@ import { constants as fsConstants } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import {
+  NPM_PUBLISH_VERIFY_DELAY_MS,
+  NPM_PUBLISH_VERIFY_MAX_ATTEMPTS,
   DEFAULT_REPO_METADATA_PATH,
+  classifyNpmViewVersionResult,
   buildGhReleaseCreateArgs,
   buildGhRepoEditArgs,
   buildGhTopicsArgs,
   buildNpmPublishArgs,
   buildReleaseSuccessSummary,
   ensureReleaseVersionMatchesPackage,
+  isNpmViewNotFound,
   parseBooleanInput,
+  parseNpmViewVersion,
   parseRepoMetadataConfig,
   relativeRepoPath,
   resolveRepoSlug,
@@ -190,14 +195,11 @@ async function runNpmPublish(options) {
   });
   await runCommand('npm', publishArgs, { cwd: repoRoot, stdio: 'inherit' });
 
-  const verified = await runCommand('npm', ['view', packageIdentifier, 'version', '--json'], {
-    cwd: repoRoot,
-    stdio: 'pipe',
+  await waitForPublishedPackageVersion({
+    packageIdentifier,
+    version,
+    reason: 'npm publish verification',
   });
-  const publishedVersion = parseNpmViewVersion(verified.stdout);
-  if (publishedVersion !== version) {
-    throw new Error(`npm publish verification failed. Expected version "${version}" but found "${publishedVersion}".`);
-  }
 
   console.log(`npm publish verification passed for ${packageIdentifier} on tag "${npmTag}".`);
 }
@@ -240,14 +242,11 @@ async function runVerify(options) {
 
   if (npmPublished) {
     const packageIdentifier = `${packageJson.name}@${version}`;
-    const published = await runCommand('npm', ['view', packageIdentifier, 'version', '--json'], {
-      cwd: repoRoot,
-      stdio: 'pipe',
+    await waitForPublishedPackageVersion({
+      packageIdentifier,
+      version,
+      reason: 'post-release npm verification',
     });
-    const publishedVersion = parseNpmViewVersion(published.stdout);
-    if (publishedVersion !== version) {
-      throw new Error(`Post-release npm verification failed. Expected "${version}" but found "${publishedVersion}".`);
-    }
   }
 
   const summary = buildReleaseSuccessSummary({
@@ -353,18 +352,82 @@ async function readPackageJson() {
   return JSON.parse(await readFile(packageJsonPath, 'utf8'));
 }
 
-function parseNpmViewVersion(stdout) {
-  const trimmed = stdout.trim();
-  if (trimmed.length === 0) {
-    return null;
+async function waitForPublishedPackageVersion({ packageIdentifier, version, reason }) {
+  let lastResult = null;
+
+  for (let attempt = 1; attempt <= NPM_PUBLISH_VERIFY_MAX_ATTEMPTS; attempt += 1) {
+    const result = await runOptionalCommand('npm', ['view', packageIdentifier, 'version', '--json'], {
+      cwd: repoRoot,
+      stdio: 'pipe',
+    });
+    lastResult = result;
+
+    const classification = classifyNpmViewVersionResult({
+      exitCode: result.code,
+      stdout: result.stdout,
+      stderr: result.stderr,
+      expectedVersion: version,
+    });
+
+    if (classification.matchesExpectedVersion) {
+      return classification.actualVersion;
+    }
+
+    const isLastAttempt = attempt === NPM_PUBLISH_VERIFY_MAX_ATTEMPTS;
+    if (!classification.retryable || isLastAttempt) {
+      throw new Error(
+        buildNpmVerifyFailureMessage({
+          packageIdentifier,
+          version,
+          reason,
+          result,
+          actualVersion: classification.actualVersion,
+        }),
+      );
+    }
+
+    const delaySeconds = Math.floor(NPM_PUBLISH_VERIFY_DELAY_MS / 1000);
+    const notFoundHint = isNpmViewNotFound(result.stdout, result.stderr)
+      ? 'npm registry still reports the package as not found'
+      : `npm registry returned version "${classification.actualVersion ?? 'unknown'}"`;
+    console.log(
+      `${reason} is waiting for npm registry propagation: ${notFoundHint} for ${packageIdentifier} (attempt ${attempt}/${NPM_PUBLISH_VERIFY_MAX_ATTEMPTS}). Retrying in ${delaySeconds}s.`,
+    );
+    await sleep(NPM_PUBLISH_VERIFY_DELAY_MS);
   }
 
-  try {
-    const parsed = JSON.parse(trimmed);
-    return typeof parsed === 'string' ? parsed : null;
-  } catch {
-    return trimmed.replace(/^"|"$/g, '');
-  }
+  throw new Error(
+    buildNpmVerifyFailureMessage({
+      packageIdentifier,
+      version,
+      reason,
+      result: lastResult ?? { code: 1, stdout: '', stderr: '' },
+      actualVersion: null,
+    }),
+  );
+}
+
+function buildNpmVerifyFailureMessage({ packageIdentifier, version, reason, result, actualVersion }) {
+  const detail =
+    actualVersion !== null
+      ? `Expected version "${version}" but found "${actualVersion}".`
+      : isNpmViewNotFound(result.stdout, result.stderr)
+        ? `npm registry still does not expose ${packageIdentifier} after ${NPM_PUBLISH_VERIFY_MAX_ATTEMPTS} attempts.`
+        : `npm registry lookup for ${packageIdentifier} failed unexpectedly.`;
+
+  return [
+    `${reason} failed for ${packageIdentifier}. ${detail}`,
+    result.stdout.trim() ? `Stdout:\n${result.stdout.trim()}` : '',
+    result.stderr.trim() ? `Stderr:\n${result.stderr.trim()}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function isGhNotFound(stderr) {

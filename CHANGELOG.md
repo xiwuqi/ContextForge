@@ -4,8 +4,7 @@ All notable changes to ContextForge will be documented in this file.
 
 ## Unreleased
 
-- No unreleased changes tracked yet.
-- The `0.1.0` entry below reflects the prepared release contents. GitHub Release creation and npm publish still happen only after the maintainer dispatches the release workflow successfully.
+- Release automation now retries npm version verification for several minutes after publish so registry propagation delays do not immediately fail the workflow.
 
 ## 0.1.0
 

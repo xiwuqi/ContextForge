@@ -1,6 +1,8 @@
 import path from 'node:path';
 
 export const DEFAULT_REPO_METADATA_PATH = '.github/release/repo-metadata.json';
+export const NPM_PUBLISH_VERIFY_MAX_ATTEMPTS = 15;
+export const NPM_PUBLISH_VERIFY_DELAY_MS = 20_000;
 
 export function parseRepoMetadataConfig(raw) {
   let parsed = raw;
@@ -211,6 +213,38 @@ export function buildReleaseSuccessSummary({
   ];
 
   return `${lines.join('\n')}\n`;
+}
+
+export function parseNpmViewVersion(stdout) {
+  const trimmed = stdout.trim();
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(trimmed);
+    return typeof parsed === 'string' ? parsed : null;
+  } catch {
+    return trimmed.replace(/^"|"$/g, '');
+  }
+}
+
+export function isNpmViewNotFound(stdout = '', stderr = '') {
+  const message = `${stdout}\n${stderr}`.trim().toLowerCase();
+  return message.includes('not found') || message.includes('e404');
+}
+
+export function classifyNpmViewVersionResult({ exitCode, stdout = '', stderr = '', expectedVersion }) {
+  const actualVersion = exitCode === 0 ? parseNpmViewVersion(stdout) : null;
+  const matchesExpectedVersion = actualVersion === expectedVersion;
+  const retryable =
+    (exitCode !== 0 && isNpmViewNotFound(stdout, stderr)) || (exitCode === 0 && !matchesExpectedVersion);
+
+  return {
+    actualVersion,
+    matchesExpectedVersion,
+    retryable,
+  };
 }
 
 export function parseBooleanInput(value, defaultValue = false) {

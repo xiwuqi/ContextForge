@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import {
+  NPM_PUBLISH_VERIFY_DELAY_MS,
+  NPM_PUBLISH_VERIFY_MAX_ATTEMPTS,
   buildGhReleaseCreateArgs,
   buildGhRepoEditArgs,
   buildGhTopicsArgs,
   buildNpmPublishArgs,
   buildReleaseSuccessSummary,
+  classifyNpmViewVersionResult,
   ensureReleaseVersionMatchesPackage,
+  isNpmViewNotFound,
+  parseNpmViewVersion,
   parseRepoMetadataConfig,
   resolveRepoSlug,
   validateChangelogForVersion,
@@ -169,5 +174,48 @@ describe('release automation helpers', () => {
     expect(summary).toContain('Release URL: https://github.com/xiwuqi/ContextForge/releases/tag/v0.1.0');
     expect(summary).toContain('Metadata sync ran: yes');
     expect(summary).toContain('npm publish ran: yes');
+  });
+
+  it('parses npm view output and classifies propagation-delay retries', () => {
+    expect(parseNpmViewVersion('"0.1.0"')).toBe('0.1.0');
+    expect(
+      classifyNpmViewVersionResult({
+        exitCode: 1,
+        stdout: '',
+        stderr: 'npm ERR! 404 Not Found - GET https://registry.npmjs.org/@xiwuqi%2fcontextforge',
+        expectedVersion: '0.1.0',
+      }),
+    ).toEqual({
+      actualVersion: null,
+      matchesExpectedVersion: false,
+      retryable: true,
+    });
+    expect(isNpmViewNotFound('', 'npm ERR! code E404')).toBe(true);
+    expect(
+      classifyNpmViewVersionResult({
+        exitCode: 0,
+        stdout: '"0.0.9"',
+        stderr: '',
+        expectedVersion: '0.1.0',
+      }),
+    ).toEqual({
+      actualVersion: '0.0.9',
+      matchesExpectedVersion: false,
+      retryable: true,
+    });
+    expect(
+      classifyNpmViewVersionResult({
+        exitCode: 0,
+        stdout: '"0.1.0"',
+        stderr: '',
+        expectedVersion: '0.1.0',
+      }),
+    ).toEqual({
+      actualVersion: '0.1.0',
+      matchesExpectedVersion: true,
+      retryable: false,
+    });
+    expect(NPM_PUBLISH_VERIFY_MAX_ATTEMPTS).toBeGreaterThan(1);
+    expect(NPM_PUBLISH_VERIFY_DELAY_MS).toBeGreaterThan(0);
   });
 });

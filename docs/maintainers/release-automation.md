@@ -17,7 +17,8 @@ When configured correctly, the workflow:
 5. optionally syncs GitHub repository metadata from `.github/release/repo-metadata.json`
 6. optionally creates the GitHub Release and uploads the tarball plus checksums
 7. optionally publishes the generated tarball to npm
-8. verifies the release state and prints a compact summary
+8. retries npm visibility checks for a short propagation window after publish
+9. verifies the release state and prints a compact summary
 
 ## Workflow inputs
 
@@ -46,6 +47,12 @@ Secrets:
   - if this secret is missing or under-scoped, set `sync_repo_metadata` to `false` or expect that step to fail clearly
 - `NPM_TOKEN` only if npm trusted publishing is not configured
 - the public npm package identifier should match `package.json`, currently `@xiwuqi/contextforge`
+
+## npm verification behavior
+
+After `npm publish`, the workflow retries `npm view` verification for a few minutes before failing.
+
+This is intentional because npm registry propagation can lag behind a successful publish response.
 
 ## Source of truth files
 
