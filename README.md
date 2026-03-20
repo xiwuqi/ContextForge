@@ -1,6 +1,6 @@
 # ContextForge
 
-ContextForge is a local-first CLI for turning a repository plus a task source into a compact task-scoped context pack and agent-ready export files for Codex, Claude Code, and Cursor.
+ContextForge is a local-first CLI and repository-to-agent context layer for turning a repository plus a task source into a compact task-scoped context pack and agent-ready export files for Codex, Claude Code, and Cursor.
 
 It exists to improve coding-agent setup, not to replace the agent. The tool focuses on four jobs:
 
@@ -36,6 +36,15 @@ npm run smoke:pack
 This command builds a tarball with `npm pack`, installs it into a temporary project without using `npm link`, and runs a real `contextforge scan --json` smoke check against a fixture repository.
 
 The repository does not publish to npm automatically today. Once published, the intended install flow can be documented as a standard npm install path, but this repo currently stops at local pack-and-smoke validation.
+
+### Maintainer eval corpus
+
+```bash
+npm run build
+npm run eval:fixtures
+```
+
+The eval runner is a deterministic maintainer check. It compiles checked-in cases, validates task-pack usefulness, validates requested exports, and writes a JSON report to `.contextforge/evals/latest.json`.
 
 ## Commands
 
@@ -205,5 +214,6 @@ npm run build
 npm run test
 npm run lint
 npm run smoke:pack
+npm run eval:fixtures
 npm run format
 ```

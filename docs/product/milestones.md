@@ -126,3 +126,19 @@ Exit criteria:
 - `export cursor` writes to `.contextforge/exports/cursor/<slug>.md` by default
 - Cursor rule suggestions are only written when `--rule-output` is explicitly provided
 - no automatic writes to `.cursor/rules/*` or legacy `.cursorrules`
+
+## Milestone 9: Eval Corpus and Instruction Sync
+
+Deliver:
+
+- maintainer-facing `npm run eval:fixtures` workflow
+- small deterministic eval corpus for compile and export usefulness
+- machine-readable eval report under `.contextforge/evals/latest.json`
+- instruction and doc wording aligned with current export targets
+
+Exit criteria:
+
+- eval cases cover local markdown, GitHub issue JSON, and nested path relevance
+- eval scoring is deterministic and readable
+- CI runs the eval corpus without network access
+- repo guidance no longer implies the product is Codex-only

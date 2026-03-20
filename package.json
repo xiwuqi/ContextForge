@@ -37,7 +37,8 @@
     "test": "vitest run",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "smoke:pack": "node ./scripts/smoke-pack.mjs"
+    "smoke:pack": "node ./scripts/smoke-pack.mjs",
+    "eval:fixtures": "node ./scripts/eval-fixtures.mjs"
   },
   "dependencies": {
     "commander": "^13.1.0",

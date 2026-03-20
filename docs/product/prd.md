@@ -1,6 +1,6 @@
 # ContextForge PRD
 
-- Version: v0.2 step 4
+- Version: v0.2 step 5
 - Status: Ready for implementation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
@@ -9,7 +9,7 @@
 
 ## Product summary
 
-ContextForge compiles repository context plus issue, PRD, or task markdown into a task-scoped context pack that coding agents can use directly.
+ContextForge is a repository-to-agent context layer that compiles repository context plus issue, PRD, or task markdown into a task-scoped context pack that coding agents can use directly.
 
 The MVP stays inside four capabilities:
 
@@ -69,6 +69,12 @@ Distribution readiness:
 - the tarball installs into a temporary project without publish automation
 - CI validates build, test, lint, and packaged smoke execution
 
+Maintainer evaluation:
+
+- `npm run eval:fixtures` runs a deterministic offline regression corpus
+- the latest report is written to `.contextforge/evals/latest.json`
+- CI runs the eval corpus so task-pack and export usefulness regressions stay visible
+
 ## Required task pack fields
 
 - task id
@@ -104,4 +110,5 @@ The implementation is done only when:
 5. generated markdown is compact and readable,
 6. the packaged CLI installs and runs from a packed tarball,
 7. CI covers validation and smoke packaging,
-8. the MVP stays within scope.
+8. deterministic evals cover task-pack and export usefulness,
+9. the MVP stays within scope.

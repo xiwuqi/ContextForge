@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "thresholds": {
+    "relevantPaths": 1,
+    "relevantFiles": 1,
+    "validationCommands": 1,
+    "taskPackFields": 1,
+    "sourceMetadata": 1,
+    "exports": 1
+  },
+  "cases": [
+    {
+      "id": "node-local-markdown-lint",
+      "fixtureRepo": "node-basic",
+      "source": {
+        "type": "markdown_file",
+        "fixturePath": "evals/sources/node-add-lint.md",
+        "repoPath": "tasks/add-lint.md"
+      },
+      "expected": {
+        "relevantPaths": ["src", "tests"],
+        "relevantFiles": ["tests/index.test.ts"],
+        "validationCommands": ["npm run build", "npm run test", "npm run lint"],
+        "requiredTaskPackFields": [
+          "objective",
+          "userRequestSummary",
+          "relevantPaths",
+          "relevantFiles",
+          "validationCommands",
+          "doneWhen",
+          "implementationPlan"
+        ]
+      },
+      "exports": [
+        {
+          "target": "codex"
+        }
+      ]
+    },
+    {
+      "id": "node-github-issue-json",
+      "fixtureRepo": "node-basic",
+      "source": {
+        "type": "github_issue_json",
+        "fixturePath": "github/contextforge-issue-101.json",
+        "repoPath": "issues/contextforge-issue-101.json"
+      },
+      "expected": {
+        "relevantPaths": ["src", "tests"],
+        "relevantFiles": ["tests/index.test.ts"],
+        "validationCommands": ["npm run build", "npm run test", "npm run lint"],
+        "requiredTaskPackFields": [
+          "objective",
+          "userRequestSummary",
+          "relevantPaths",
+          "relevantFiles",
+          "constraints",
+          "validationCommands",
+          "doneWhen",
+          "implementationPlan"
+        ],
+        "sourceMetadata": {
+          "sourceType": "github_issue_json",
+          "sourceRef": "xiwuqi/ContextForge#101",
+          "sourceTitle": "Support GitHub issue sources in compile",
+          "sourceLabels": ["enhancement", "cli", "github"],
+          "sourceUrl": "https://github.com/xiwuqi/ContextForge/issues/101"
+        }
+      },
+      "exports": [
+        {
+          "target": "claude"
+        },
+        {
+          "target": "cursor",
+          "includeRuleSuggestion": true
+        }
+      ]
+    },
+    {
+      "id": "python-nested-readme-validation",
+      "fixtureRepo": "python-basic",
+      "source": {
+        "type": "markdown_file",
+        "fixturePath": "evals/sources/python-readme-validation.md",
+        "repoPath": "tasks/readme-validation.md"
+      },
+      "expected": {
+        "relevantPaths": ["src/python_basic", "tests"],
+        "relevantFiles": ["README.md", "src/python_basic/__init__.py", "tests/test_basic.py"],
+        "validationCommands": ["pytest"],
+        "requiredTaskPackFields": [
+          "objective",
+          "userRequestSummary",
+          "relevantPaths",
+          "relevantFiles",
+          "validationCommands",
+          "doneWhen",
+          "implementationPlan"
+        ]
+      },
+      "exports": [
+        {
+          "target": "cursor"
+        }
+      ]
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 ## Mission
 
-Build **ContextForge** as a practical, open source, local-first CLI that turns repository context plus a task description into a Codex-ready task pack.
+Build **ContextForge** as a practical, open source, local-first CLI that turns repository context plus a task source into a task pack and agent-ready briefs for Codex, Claude Code, and Cursor.
 
 The repository should feel like a serious developer tool, not a demo and not a chat wrapper.
 
@@ -24,8 +24,8 @@ Stay inside these boundaries unless the user explicitly asks to expand scope:
 The MVP wedge is:
 
 1. scan repository
-2. compile task markdown into a task pack
-3. export a Codex-ready prompt file
+2. compile task sources into a task pack
+3. export compact agent-ready briefs
 4. lint stale context and guidance
 
 ## Primary audience
