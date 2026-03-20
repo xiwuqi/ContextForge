@@ -40,6 +40,7 @@
     "format": "prettier --write .",
     "smoke:pack": "node ./scripts/smoke-pack.mjs",
     "eval:fixtures": "node ./scripts/eval-fixtures.mjs",
+    "publish:dry-run": "node ./scripts/publish-dry-run.mjs",
     "demo:refresh": "node ./scripts/refresh-demo-assets.mjs",
     "release:check": "node ./scripts/release-check.mjs"
   },

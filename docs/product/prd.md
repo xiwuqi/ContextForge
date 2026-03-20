@@ -1,6 +1,6 @@
 # ContextForge PRD
 
-- Version: v0.2 step 6
+- Version: v0.2 step 7
 - Status: Release-candidate preparation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
@@ -78,6 +78,7 @@ Maintainer evaluation:
 Release-candidate onboarding:
 
 - `npm run release:check` runs the full first-release candidate validation set
+- `npm run publish:dry-run` validates npm publish readiness without publishing
 - `examples/demo/` contains small checked-in representative outputs for first-time readers
 - `CHANGELOG.md` and maintainer release docs stay manual and honest about publish state
 
@@ -118,4 +119,5 @@ The implementation is done only when:
 7. CI covers validation and smoke packaging,
 8. deterministic evals cover task-pack and export usefulness,
 9. release-candidate docs and demo artifacts reflect the current product,
-10. the MVP stays within scope.
+10. publish dry-run and package-content sanity checks pass,
+11. the MVP stays within scope.

@@ -6,9 +6,11 @@ Use this guide when ContextForge is ready for its first public release candidate
 
 - CI is green on the current branch.
 - `npm run release:check` passes locally.
+- `npm run publish:dry-run` passes locally on its own.
 - `examples/demo/` still reflects the current product behavior.
 - `CHANGELOG.md` is up to date and honest about release state.
 - package metadata in `package.json` still matches the current CLI surface.
+- repo-root source-of-truth docs are clear and stale bootstrap artifacts are archived or removed.
 
 ## Run the release-candidate checks
 
@@ -18,6 +20,12 @@ npm run release:check
 ```
 
 If a step fails, fix that issue first instead of skipping around it. The release check is meant to be the minimum confidence gate before any public release decision.
+
+If you want to inspect just the publishability path, run:
+
+```bash
+npm run publish:dry-run
+```
 
 ## Inspect the demo assets
 
@@ -61,6 +69,7 @@ Typical manual steps later may include:
 - `npm pack` one last time and inspect the tarball
 - create a git tag only when you are satisfied with the release contents
 - run `npm publish` manually when you are authenticated and ready
+- update the GitHub About text, topics, homepage, and first release draft using `docs/maintainers/public-metadata-checklist.md`
 
 ## What stays manual
 

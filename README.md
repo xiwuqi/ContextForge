@@ -71,6 +71,14 @@ This builds a tarball with `npm pack`, installs it into a temporary project with
 
 The repository does not publish to npm automatically. Any future npm publish remains a manual maintainer action.
 
+For a safe publishability check without releasing anything:
+
+```bash
+npm run publish:dry-run
+```
+
+This runs `npm publish --dry-run`, verifies the publishable file set, and fails if non-runtime clutter leaks into the package.
+
 ## Quickstart
 
 1. Initialize repository context.
@@ -185,7 +193,13 @@ Run the release-candidate check set:
 npm run release:check
 ```
 
-`npm run release:check` runs build, test, lint, packaged smoke validation, and the deterministic eval corpus.
+Run a standalone publishability dry-run:
+
+```bash
+npm run publish:dry-run
+```
+
+`npm run release:check` runs build, test, lint, packaged smoke validation, the deterministic eval corpus, and the publish dry-run package sanity check.
 
 ## Provider mode
 
@@ -197,6 +211,7 @@ ContextForge works without any provider configuration. If `CONTEXTFORGE_PROVIDER
 - run a hosted SaaS or database
 - depend on a browser UI or browser automation
 - require an API key for the core workflow
+- automate npm publish or GitHub release creation
 - auto-write `CLAUDE.md`, `.claude/*`, `.cursor/rules/*`, or legacy `.cursorrules`
 - replace agent judgment with a heavy RAG stack or model training pipeline
 
@@ -209,6 +224,7 @@ npm run test
 npm run lint
 npm run smoke:pack
 npm run eval:fixtures
+npm run publish:dry-run
 npm run release:check
 npm run demo:refresh
 npm run format

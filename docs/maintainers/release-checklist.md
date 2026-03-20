@@ -18,6 +18,7 @@ npm run release:check
 - `npm run lint`
 - `npm run smoke:pack`
 - `npm run eval:fixtures`
+- `npm run publish:dry-run`
 
 ## Packaging checks
 
@@ -27,6 +28,8 @@ Confirm the package metadata still matches the actual product:
 - description and keywords match the current Codex, Claude Code, and Cursor support
 - `repository`, `homepage`, `bugs`, and MIT license metadata are present
 - `files` stays minimal and only ships the compiled CLI payload
+- `npm run publish:dry-run` passes and reports a clean publishable file set
+- bootstrap-era docs no longer compete with `docs/product/` as a root-level source of truth
 
 ## Demo and changelog checks
 
@@ -44,6 +47,12 @@ Before any release action, confirm:
 - the `package-smoke` job passed
 - the `eval-fixtures` job passed
 - no workflow in the repository performs automatic npm publish
+
+## Manual public metadata
+
+Before a first public release, review:
+
+- `docs/maintainers/public-metadata-checklist.md`
 
 ## Manual publish boundary
 

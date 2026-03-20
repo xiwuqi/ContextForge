@@ -10,6 +10,7 @@ const steps = [
   ['lint', ['npm', 'run', 'lint']],
   ['smoke:pack', ['npm', 'run', 'smoke:pack']],
   ['eval:fixtures', ['npm', 'run', 'eval:fixtures']],
+  ['publish:dry-run', ['npm', 'run', 'publish:dry-run']],
 ];
 
 try {

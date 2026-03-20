@@ -158,3 +158,19 @@ Exit criteria:
 - demo assets show representative task-pack and export outputs without requiring a run first
 - `npm run release:check` passes offline and covers build, test, lint, smoke, and eval checks
 - release docs stay explicit about what is still manual and not yet automated
+
+## Milestone 11: Repo Hygiene and Publish Dry-Run
+
+Deliver:
+
+- repository-root cleanup for stale bootstrap artifacts
+- maintainer-facing `npm run publish:dry-run`
+- package-content sanity checking for publishable artifacts
+- manual GitHub and npm metadata checklist
+
+Exit criteria:
+
+- stale bootstrap-era root artifacts are removed, archived, or clearly documented
+- `npm run publish:dry-run` validates publishable package contents without publishing
+- `npm run release:check` includes the publish dry-run path
+- maintainers have a short checklist for manual GitHub and npm metadata steps
