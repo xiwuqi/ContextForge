@@ -4,6 +4,7 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { buildInstallArgs, parseBooleanEnv, shouldRetryOnlineInstall } from './lib/smoke-pack.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packageJson = JSON.parse(await readFile(path.join(repoRoot, 'package.json'), 'utf8'));
@@ -11,6 +12,7 @@ const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'contextforge-pack-'));
 const packDir = path.join(tempRoot, 'pack');
 const installDir = path.join(tempRoot, 'install');
 const fixtureDir = path.join(tempRoot, 'fixture');
+const allowNetworkFallback = parseBooleanEnv(process.env.CONTEXTFORGE_SMOKE_ALLOW_NETWORK);
 
 try {
   await mkdir(packDir, { recursive: true });
@@ -35,15 +37,24 @@ try {
     'utf8',
   );
 
-  await runCommand(resolveCommand('npm'), [
-    'install',
-    '--offline',
-    '--no-audit',
-    '--no-fund',
-    tarballPath,
-  ], {
-    cwd: installDir,
-  });
+  let usedNetworkFallback = false;
+
+  try {
+    await runCommand(resolveCommand('npm'), buildInstallArgs({ tarballPath, offline: true }), {
+      cwd: installDir,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!shouldRetryOnlineInstall(message, allowNetworkFallback)) {
+      throw error;
+    }
+
+    usedNetworkFallback = true;
+    console.log('Offline tarball install cache was incomplete. Retrying with network access because CONTEXTFORGE_SMOKE_ALLOW_NETWORK is enabled.');
+    await runCommand(resolveCommand('npm'), buildInstallArgs({ tarballPath, offline: false }), {
+      cwd: installDir,
+    });
+  }
 
   const versionResult = await runCommand(resolveCommand('npm'), [
     'exec',
@@ -84,6 +95,9 @@ try {
   }
 
   await stat(path.join(fixtureDir, '.contextforge', 'context.json'));
+  if (usedNetworkFallback) {
+    console.log('Package smoke test completed with an explicit network fallback.');
+  }
   console.log(`Package smoke test passed with ${path.basename(tarballPath)}.`);
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);

@@ -47,6 +47,7 @@ jobs:
       RELEASE_CREATE_GITHUB: ${{ inputs.create_github_release }}
       RELEASE_PUBLISH_NPM: ${{ inputs.publish_to_npm }}
       RELEASE_SYNC_METADATA: ${{ inputs.sync_repo_metadata }}
+      CONTEXTFORGE_SMOKE_ALLOW_NETWORK: "1"
     steps:
       - uses: actions/checkout@v5
         with:
