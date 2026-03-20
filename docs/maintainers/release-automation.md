@@ -4,6 +4,8 @@ ContextForge ships a manual-dispatch release workflow at `.github/workflows/rele
 
 It does not run on push. A maintainer must dispatch it explicitly with the target version.
 
+For the first live public release, see `docs/maintainers/live-release-prerequisites.md` for the exact dispatch values and required external setup.
+
 ## What the workflow does
 
 When configured correctly, the workflow:
@@ -59,10 +61,18 @@ Secrets:
 4. dispatch the workflow with the matching version
 5. review the GitHub Release and npm package page after it finishes
 
+Recommended first live dispatch:
+
+- `version = 0.1.0`
+- `npm_tag = latest`
+- `publish_to_npm = true`
+- `create_github_release = true`
+- `sync_repo_metadata = true`
+- `prerelease = false`
+
 ## What remains outside repo automation
 
 - deciding the version to release
 - writing or curating final changelog content
 - configuring GitHub workflow permissions
 - configuring repo metadata token or npm publishing setup
-

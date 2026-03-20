@@ -67,6 +67,7 @@ Before a first public release, review:
 - `docs/maintainers/public-metadata-checklist.md`
 - `docs/maintainers/manual-release-handoff.md`
 - `docs/maintainers/release-automation.md`
+- `docs/maintainers/live-release-prerequisites.md`
 - `docs/maintainers/npm-publish-guide.md`
 
 ## Manual publish boundary

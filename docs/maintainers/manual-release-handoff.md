@@ -43,7 +43,7 @@ Check that it:
 After reviewing the bundle:
 
 1. make sure `.github/release/repo-metadata.json`, `package.json`, and `CHANGELOG.md` are ready in git
-2. confirm the release workflow permissions and secrets described in `docs/maintainers/release-automation.md`
+2. confirm the release workflow permissions and secrets described in `docs/maintainers/release-automation.md` and `docs/maintainers/live-release-prerequisites.md`
 3. trigger the manual-dispatch release workflow
 4. if metadata sync or npm publish credentials are not configured, complete only those missing steps manually
 5. verify the GitHub Release and npm package page after publish

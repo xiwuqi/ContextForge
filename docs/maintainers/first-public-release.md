@@ -2,7 +2,7 @@
 
 Use this guide when ContextForge is ready for its first public release candidate or first published release.
 
-If you want the shortest actionable list, start with `docs/maintainers/first-public-release-checklist.md`. Use this document for the surrounding context and decision points.
+If you want the shortest actionable list, start with `docs/maintainers/first-public-release-checklist.md`. Use `docs/maintainers/live-release-prerequisites.md` for the exact first live dispatch values and external setup. Use this document for the surrounding context and decision points.
 
 ## What should already be true
 
@@ -39,6 +39,15 @@ npm run release:artifacts
 ```
 
 When the version, changelog, permissions, and npm setup are ready, trigger the release workflow in GitHub Actions instead of recreating the publish steps by hand.
+
+For the first live public release, the recommended workflow-dispatch values are:
+
+- `version = 0.1.0`
+- `npm_tag = latest`
+- `publish_to_npm = true`
+- `create_github_release = true`
+- `sync_repo_metadata = true`
+- `prerelease = false`
 
 ## Inspect the demo assets
 

@@ -25,10 +25,18 @@ Recommended defaults for a normal public release:
 - `sync_repo_metadata`: `true`
 - `prerelease`: `false`
 
+For the first live public release, use these exact values:
+
+- `version = 0.1.0`
+- `npm_tag = latest`
+- `publish_to_npm = true`
+- `create_github_release = true`
+- `sync_repo_metadata = true`
+- `prerelease = false`
+
 ## After the workflow finishes
 
 - verify the GitHub Release exists and includes the tarball plus checksums
 - verify the npm package page shows the expected version and README
 - review GitHub About text, topics, and homepage
 - spot-check the install and quickstart flow from the published package
-

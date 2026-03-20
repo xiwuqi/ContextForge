@@ -28,6 +28,12 @@ If trusted publishing is not available yet:
 
 The workflow will then publish using token auth instead of trusted publishing.
 
+For the first live public release, keep these workflow inputs:
+
+- `version = 0.1.0`
+- `npm_tag = latest`
+- `publish_to_npm = true`
+
 ## Safety notes
 
 - never print or commit npm tokens
@@ -42,4 +48,3 @@ After the workflow publishes:
 - confirm `npm view contextforge@<version> version` returns the expected version
 - verify the npm package page renders `README.md` correctly
 - verify homepage, repository, bugs, and license links
-
