@@ -1,21 +1,55 @@
 # ContextForge
 
-ContextForge is a local-first CLI and repository-to-agent context layer for turning a repository plus a task source into a compact task-scoped context pack and agent-ready export files for Codex, Claude Code, and Cursor.
+ContextForge is a local-first repository-to-agent context layer. It scans a repository, compiles a task source into a scoped task pack, and exports compact briefs for Codex, Claude Code, and Cursor.
 
-It exists to improve coding-agent setup, not to replace the agent. The tool focuses on four jobs:
+It exists to improve agent setup, not to replace the agent.
 
-1. scan a repository
-2. compile task sources into structured task packs
-3. export compact Codex, Claude Code, and Cursor prompts
-4. lint stale context and guidance
+## Who this is for
 
-## Why it exists
+- solo builders using coding agents
+- open source maintainers
+- small engineering teams that want repeatable local context prep
 
-Coding agents fail early when they start with incomplete repository context, vague constraints, or missing validation steps. ContextForge packages that missing setup into reproducible artifacts that are easy to inspect, commit, and refresh locally.
+## What problem it solves
 
-## Installation
+Coding agents lose time when they start without the right files, constraints, validation commands, or task framing. ContextForge turns that missing setup into checked-in, refreshable artifacts that stay local to the repository.
+
+## How it works
+
+1. `init` or `scan` inspects the repository and writes context artifacts under `.contextforge/`.
+2. `compile` turns a markdown task or GitHub issue source into a task pack.
+3. `export` renders that task pack into an agent-specific brief.
+4. `lint` checks generated guidance for stale references and weak validation setup.
+
+## Supported export targets
+
+| Target | Command | Default output | Notes |
+| --- | --- | --- | --- |
+| Codex | `contextforge export codex` | `.github/codex/prompts/<slug>.md` | Compact prompt file for Codex workflows. |
+| Claude Code | `contextforge export claude` | `.contextforge/exports/claude/<slug>.md` | Task brief only. No `CLAUDE.md` or `.claude/*` memory files are auto-written. |
+| Cursor | `contextforge export cursor` | `.contextforge/exports/cursor/<slug>.md` | Task brief only by default. Optional `.mdc` rule suggestions are only written when `--rule-output` is passed. |
+
+## Try it locally in under 5 minutes
 
 ContextForge targets Node.js 20 and newer. CI validates the CLI on Node 20 and Node 22.
+
+```bash
+npm ci
+npm run build
+node dist/cli/index.js init
+node dist/cli/index.js compile --input examples/issue-add-command.md
+node dist/cli/index.js export codex --input .contextforge/task-packs/add-lint-command.json
+```
+
+That gives you:
+
+- repository context under `.contextforge/`
+- a compiled task pack under `.contextforge/task-packs/`
+- a Codex prompt under `.github/codex/prompts/`
+
+If you want to see representative outputs before running anything, open `examples/demo/`.
+
+## Install and package
 
 ### Local development install
 
@@ -25,7 +59,7 @@ npm run build
 npm link
 ```
 
-If you do not want to link the CLI globally, use `node dist/cli/index.js` after building.
+If you do not want to link the CLI globally, use `node dist/cli/index.js`.
 
 ### Packaged local tarball smoke test
 
@@ -33,18 +67,47 @@ If you do not want to link the CLI globally, use `node dist/cli/index.js` after 
 npm run smoke:pack
 ```
 
-This command builds a tarball with `npm pack`, installs it into a temporary project without using `npm link`, and runs a real `contextforge scan --json` smoke check against a fixture repository.
+This builds a tarball with `npm pack`, installs it into a temporary project without `npm link`, and runs a real `contextforge scan --json` smoke check against a fixture repository.
 
-The repository does not publish to npm automatically today. Once published, the intended install flow can be documented as a standard npm install path, but this repo currently stops at local pack-and-smoke validation.
+The repository does not publish to npm automatically. Any future npm publish remains a manual maintainer action.
 
-### Maintainer eval corpus
+## Quickstart
+
+1. Initialize repository context.
 
 ```bash
-npm run build
-npm run eval:fixtures
+contextforge init
 ```
 
-The eval runner is a deterministic maintainer check. It compiles checked-in cases, validates task-pack usefulness, validates requested exports, and writes a JSON report to `.contextforge/evals/latest.json`.
+2. Compile exactly one task source into a task pack.
+
+```bash
+contextforge compile --input examples/issue-add-command.md
+contextforge compile --github-issue owner/repo#123
+contextforge compile --github-issue-json tests/fixtures/github/contextforge-issue-101.json
+```
+
+3. Export a task brief for the agent you want to use.
+
+```bash
+contextforge export codex --input .contextforge/task-packs/add-lint-command.json
+contextforge export claude --input .contextforge/task-packs/add-lint-command.json
+contextforge export cursor --input .contextforge/task-packs/add-lint-command.json
+```
+
+4. Optionally write a task-scoped Cursor rule suggestion.
+
+```bash
+contextforge export cursor \
+  --input .contextforge/task-packs/add-lint-command.json \
+  --rule-output .cursor/rules/add-lint-command.mdc
+```
+
+5. Lint generated guidance for drift.
+
+```bash
+contextforge lint
+```
 
 ## Commands
 
@@ -58,83 +121,29 @@ contextforge export cursor --input <task-pack.json> [--output <file>] [--rule-ou
 contextforge lint [--json] [--strict]
 ```
 
-`contextforge compile` requires exactly one source flag. Use:
+`contextforge compile` requires exactly one source flag:
 
-- `--input <file>` for the existing local markdown workflow
-- `--github-issue <url|owner/repo#number>` to fetch a GitHub issue directly
-- `--github-issue-json <path>` for offline compilation from an exported issue payload
+- `--input <file>` for local markdown tasks
+- `--github-issue <url|owner/repo#number>` for live GitHub issue fetching
+- `--github-issue-json <path>` for offline issue JSON compilation
 
 ## Generated files
 
-ContextForge keeps its internal generated artifacts under `.contextforge/` by default:
+ContextForge keeps its generated internal artifacts under `.contextforge/` by default:
 
 - `.contextforge/context.json`
 - `.contextforge/context.md`
 - `.contextforge/agents.suggested.md`
 - `.contextforge/task-packs/<slug>.json`
 - `.contextforge/task-packs/<slug>.md`
+- `.contextforge/exports/claude/<slug>.md`
+- `.contextforge/exports/cursor/<slug>.md`
 
-Codex prompt exports are written to `.github/codex/prompts/` by default:
+Codex prompt exports are written to:
 
 - `.github/codex/prompts/<slug>.md`
 
-Claude Code task brief exports are written to `.contextforge/exports/claude/` by default:
-
-- `.contextforge/exports/claude/<slug>.md`
-
-Cursor task brief exports are written to `.contextforge/exports/cursor/` by default:
-
-- `.contextforge/exports/cursor/<slug>.md`
-
-## Quickstart
-
-1. Initialize repository context.
-
-```bash
-contextforge init
-```
-
-2. Compile a task source into a task pack.
-
-```bash
-contextforge compile --input examples/issue-add-command.md
-```
-
-You can also compile directly from GitHub issues:
-
-```bash
-contextforge compile --github-issue https://github.com/owner/repo/issues/123
-contextforge compile --github-issue owner/repo#123
-contextforge compile --github-issue-json tests/fixtures/github/contextforge-issue-101.json
-```
-
-3. Export an agent brief from the generated task pack.
-
-```bash
-contextforge export codex --input .contextforge/task-packs/add-lint-command.json
-contextforge export claude --input .contextforge/task-packs/add-lint-command.json
-contextforge export cursor --input .contextforge/task-packs/add-lint-command.json
-```
-
-4. Lint the generated guidance for drift.
-
-```bash
-contextforge lint
-```
-
-## Provider mode
-
-ContextForge works without any provider configuration. If `CONTEXTFORGE_PROVIDER=openai` and `OPENAI_API_KEY` are present, `compile` attempts a model-enhanced pass and falls back to deterministic heuristics if the provider call fails.
-
-## GitHub issue sources
-
-GitHub issue fetching stays optional:
-
-- Public issues can be fetched directly with `--github-issue`.
-- If `GITHUB_TOKEN` is set, ContextForge sends it as a bearer token for authenticated issue access.
-- Offline mode still works with `--input` and `--github-issue-json`.
-
-Task packs now include source metadata so downstream tooling can tell where the task came from:
+Task packs may also include source metadata:
 
 - `source_type`
 - `source_ref`
@@ -142,69 +151,54 @@ Task packs now include source metadata so downstream tooling can tell where the 
 - `source_labels`
 - `source_url`
 
-## Claude Code exports
+## Demo assets
 
-`contextforge export claude` writes a compact markdown task brief that is meant for Claude Code workflows:
+`examples/demo/` contains a small checked-in set of representative outputs:
 
-- paste the generated markdown directly into Claude Code
-- reference it with `@.contextforge/exports/claude/<slug>.md`
-- keep it alongside the task pack without writing to persistent Claude memory
+- one task-pack markdown example
+- one task-pack JSON example
+- one Codex export example
+- one Claude Code export example
+- one Cursor export example
+- one Cursor rule suggestion example
 
-Example:
-
-```bash
-contextforge export claude --input .contextforge/task-packs/add-lint-command.json
-```
-
-This milestone does not auto-write any Claude project memory files, including:
-
-- `CLAUDE.md`
-- `.claude/CLAUDE.md`
-- `.claude/rules/*`
-- `.claude/settings.json`
-- `.claude/settings.local.json`
-
-## Cursor exports
-
-`contextforge export cursor` writes a compact markdown brief for Cursor Agent and can optionally write a task-scoped `.mdc` rule suggestion file.
-
-Example brief export:
+Refresh those curated demo assets with:
 
 ```bash
-contextforge export cursor --input .contextforge/task-packs/add-lint-command.json
+npm run demo:refresh
 ```
 
-Optional manual rule suggestion export:
+The demo files are copied from deterministic golden fixtures so they stay small and reviewable.
+
+## Maintainer workflows
+
+Run the fixture eval corpus:
 
 ```bash
-contextforge export cursor \
-  --input .contextforge/task-packs/add-lint-command.json \
-  --rule-output .cursor/rules/add-lint-command.mdc
+npm run build
+npm run eval:fixtures
 ```
 
-Use the generated brief by pasting it into Cursor Agent chat or keeping it in the workspace as a task brief. The optional `.mdc` file is only a suggestion artifact for manual use.
+Run the release-candidate check set:
 
-This milestone does not auto-write:
-
-- `.cursor/rules/*`
-- `.cursorrules`
-
-Legacy `.cursorrules` support is not added in this milestone.
-
-## Repository layout
-
-```text
-.github/
-  workflows/
-  codex/
-    prompts/
-docs/
-  product/
-examples/
-src/
-tests/
-.contextforge/
+```bash
+npm run release:check
 ```
+
+`npm run release:check` runs build, test, lint, packaged smoke validation, and the deterministic eval corpus.
+
+## Provider mode
+
+ContextForge works without any provider configuration. If `CONTEXTFORGE_PROVIDER=openai` and `OPENAI_API_KEY` are present, `compile` attempts a model-enhanced pass and falls back to deterministic heuristics if the provider call fails.
+
+## What ContextForge does not do
+
+- generate code for you or replace the coding agent
+- run a hosted SaaS or database
+- depend on a browser UI or browser automation
+- require an API key for the core workflow
+- auto-write `CLAUDE.md`, `.claude/*`, `.cursor/rules/*`, or legacy `.cursorrules`
+- replace agent judgment with a heavy RAG stack or model training pipeline
 
 ## Development
 
@@ -215,5 +209,7 @@ npm run test
 npm run lint
 npm run smoke:pack
 npm run eval:fixtures
+npm run release:check
+npm run demo:refresh
 npm run format
 ```

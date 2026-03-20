@@ -4,24 +4,37 @@ ContextForge is not published automatically by this repository. Use this checkli
 
 ## Pre-release validation
 
-Run the full local validation set:
+Run the release-candidate validation set:
 
 ```bash
 npm ci
-npm run build
-npm run test
-npm run lint
-npm run smoke:pack
+npm run release:check
 ```
+
+`npm run release:check` runs:
+
+- `npm run build`
+- `npm run test`
+- `npm run lint`
+- `npm run smoke:pack`
+- `npm run eval:fixtures`
 
 ## Packaging checks
 
 Confirm the package metadata still matches the actual product:
 
 - CLI package name and `bin` target are correct
-- description and keywords match the current Codex and Claude Code export support
+- description and keywords match the current Codex, Claude Code, and Cursor support
 - `repository`, `homepage`, `bugs`, and MIT license metadata are present
 - `files` stays minimal and only ships the compiled CLI payload
+
+## Demo and changelog checks
+
+Before any public release candidate:
+
+- inspect `examples/demo/` and confirm the artifacts still look representative
+- refresh the demo assets with `npm run demo:refresh` if the checked-in outputs are stale
+- update `CHANGELOG.md` so the release-candidate state is honest and current
 
 ## CI checks
 
@@ -29,8 +42,9 @@ Before any release action, confirm:
 
 - GitHub Actions CI is green on Node 20 and Node 22
 - the `package-smoke` job passed
+- the `eval-fixtures` job passed
 - no workflow in the repository performs automatic npm publish
 
 ## Manual publish boundary
 
-This milestone stops at pack-and-smoke readiness. If npm publish is considered later, treat it as a separate deliberate step after reviewing the tarball and current docs.
+This repository stops at release-candidate readiness. Version choice, git tags, npm publish, and any release notes outside `CHANGELOG.md` remain manual maintainer actions.

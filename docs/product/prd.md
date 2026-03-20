@@ -1,11 +1,11 @@
 # ContextForge PRD
 
-- Version: v0.2 step 5
-- Status: Ready for implementation
+- Version: v0.2 step 6
+- Status: Release-candidate preparation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
 - Primary integration targets: Codex, Claude Code, and Cursor
-- Secondary compatibility target: Aider / generic coding agents
+- Secondary compatibility target: generic coding-agent workflows via task packs
 
 ## Product summary
 
@@ -75,6 +75,12 @@ Maintainer evaluation:
 - the latest report is written to `.contextforge/evals/latest.json`
 - CI runs the eval corpus so task-pack and export usefulness regressions stay visible
 
+Release-candidate onboarding:
+
+- `npm run release:check` runs the full first-release candidate validation set
+- `examples/demo/` contains small checked-in representative outputs for first-time readers
+- `CHANGELOG.md` and maintainer release docs stay manual and honest about publish state
+
 ## Required task pack fields
 
 - task id
@@ -111,4 +117,5 @@ The implementation is done only when:
 6. the packaged CLI installs and runs from a packed tarball,
 7. CI covers validation and smoke packaging,
 8. deterministic evals cover task-pack and export usefulness,
-9. the MVP stays within scope.
+9. release-candidate docs and demo artifacts reflect the current product,
+10. the MVP stays within scope.

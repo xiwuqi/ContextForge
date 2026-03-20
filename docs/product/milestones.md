@@ -142,3 +142,19 @@ Exit criteria:
 - eval scoring is deterministic and readable
 - CI runs the eval corpus without network access
 - repo guidance no longer implies the product is Codex-only
+
+## Milestone 10: First Public Release Candidate
+
+Deliver:
+
+- README upgrade for first-visit clarity
+- small checked-in demo output set under `examples/demo/`
+- maintainer-facing `npm run release:check`
+- `CHANGELOG.md` plus first-release maintainer guidance
+
+Exit criteria:
+
+- first-time readers can understand the product, target users, and export targets quickly
+- demo assets show representative task-pack and export outputs without requiring a run first
+- `npm run release:check` passes offline and covers build, test, lint, smoke, and eval checks
+- release docs stay explicit about what is still manual and not yet automated

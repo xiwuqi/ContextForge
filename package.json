@@ -1,7 +1,7 @@
 {
   "name": "contextforge",
   "version": "0.1.0",
-  "description": "Local-first CLI that compiles repository context and task sources into agent-ready briefs for Codex, Claude Code, and Cursor.",
+  "description": "Local-first repository-to-agent CLI that compiles repository context and task sources into agent-ready briefs for Codex, Claude Code, and Cursor.",
   "license": "MIT",
   "type": "module",
   "keywords": [
@@ -9,6 +9,7 @@
     "local-first",
     "developer-tools",
     "repository-context",
+    "agent-context",
     "coding-agents",
     "codex",
     "claude-code",
@@ -38,7 +39,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "smoke:pack": "node ./scripts/smoke-pack.mjs",
-    "eval:fixtures": "node ./scripts/eval-fixtures.mjs"
+    "eval:fixtures": "node ./scripts/eval-fixtures.mjs",
+    "demo:refresh": "node ./scripts/refresh-demo-assets.mjs",
+    "release:check": "node ./scripts/release-check.mjs"
   },
   "dependencies": {
     "commander": "^13.1.0",
