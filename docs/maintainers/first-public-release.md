@@ -14,6 +14,7 @@ If you want the shortest actionable list, start with `docs/maintainers/first-pub
 - `examples/demo/` still reflects the current product behavior.
 - `CHANGELOG.md` is up to date and honest about release state.
 - package metadata in `package.json` still matches the current CLI surface.
+- the npm package name in `package.json` is the intended public identifier, currently `@xiwuqi/contextforge`.
 - repo-root source-of-truth docs are clear and stale bootstrap artifacts are archived or removed.
 - issue templates, `CONTRIBUTING.md`, `SECURITY.md`, and feedback triage guidance are present and current.
 
@@ -91,6 +92,7 @@ Typical manual steps later may include:
 - `npm pack` one last time and inspect the tarball
 - trigger the release workflow with the exact package version once you are satisfied with the release contents
 - use `docs/maintainers/npm-publish-guide.md` if npm trusted publishing or fallback token auth is not yet configured
+- confirm the intended public npm package identifier is `@xiwuqi/contextforge`
 - update the GitHub About text, topics, homepage, and first release draft using `docs/maintainers/public-metadata-checklist.md`
 - review the bundle contents and release-note draft described in `docs/maintainers/manual-release-handoff.md`
 

@@ -2,6 +2,8 @@
 
 ContextForge keeps `npm run publish:dry-run` for local validation and uses the release workflow for real publish when configured.
 
+The intended public package identifier is `@xiwuqi/contextforge`. The CLI command remains `contextforge`.
+
 ## Preferred path: npm trusted publishing
 
 Use npm trusted publishing from GitHub Actions when possible.
@@ -22,7 +24,7 @@ Behavior:
 
 If trusted publishing is not available yet:
 
-- create an npm automation token with publish access for the package
+- create an npm automation token with publish access for `@xiwuqi/contextforge`
 - store it as the repository secret `NPM_TOKEN`
 - keep `publish_to_npm` enabled in the workflow dispatch inputs
 
@@ -45,6 +47,6 @@ For the first live public release, keep these workflow inputs:
 
 After the workflow publishes:
 
-- confirm `npm view contextforge@<version> version` returns the expected version
+- confirm `npm view @xiwuqi/contextforge@<version> version` returns the expected version
 - verify the npm package page renders `README.md` correctly
 - verify homepage, repository, bugs, and license links

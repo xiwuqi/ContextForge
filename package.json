@@ -1,5 +1,5 @@
 {
-  "name": "contextforge",
+  "name": "@xiwuqi/contextforge",
   "version": "0.1.0",
   "description": "Local-first repository-to-agent CLI that compiles repository context and task sources into agent-ready briefs for Codex, Claude Code, and Cursor.",
   "license": "MIT",

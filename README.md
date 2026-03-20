@@ -67,6 +67,8 @@ npm run demo:refresh
 
 ## Install, package, and release checks
 
+Once the public package is published, install it as `@xiwuqi/contextforge`. The CLI command remains `contextforge`.
+
 Local development install:
 
 ```bash

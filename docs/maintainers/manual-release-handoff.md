@@ -48,6 +48,8 @@ After reviewing the bundle:
 4. if metadata sync or npm publish credentials are not configured, complete only those missing steps manually
 5. verify the GitHub Release and npm package page after publish
 
+For the first public release, the npm package page to verify is `@xiwuqi/contextforge`.
+
 Use `docs/maintainers/public-metadata-checklist.md` for the GitHub and npm page checks.
 
 ## What this repo does not automate

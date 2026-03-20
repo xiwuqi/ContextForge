@@ -45,6 +45,7 @@ Secrets:
   - use a token that can edit repository metadata
   - if this secret is missing or under-scoped, set `sync_repo_metadata` to `false` or expect that step to fail clearly
 - `NPM_TOKEN` only if npm trusted publishing is not configured
+- the public npm package identifier should match `package.json`, currently `@xiwuqi/contextforge`
 
 ## Source of truth files
 
@@ -69,6 +70,8 @@ Recommended first live dispatch:
 - `create_github_release = true`
 - `sync_repo_metadata = true`
 - `prerelease = false`
+
+The first public npm publish target for those inputs is `@xiwuqi/contextforge@0.1.0`.
 
 ## What remains outside repo automation
 

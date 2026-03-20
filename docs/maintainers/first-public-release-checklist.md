@@ -12,6 +12,7 @@ Use this when you want the shortest path to a real first release decision.
 - `.github/release/repo-metadata.json` matches the public description, homepage, and topics you want.
 - GitHub Actions workflow permissions allow write access to contents.
 - npm trusted publishing is configured, or `NPM_TOKEN` is available as a repository secret.
+- the target npm package name is `@xiwuqi/contextforge`.
 - `REPO_METADATA_TOKEN` is available if you want the workflow to sync GitHub repo metadata.
 
 ## Dispatch inputs
@@ -37,6 +38,6 @@ For the first live public release, use these exact values:
 ## After the workflow finishes
 
 - verify the GitHub Release exists and includes the tarball plus checksums
-- verify the npm package page shows the expected version and README
+- verify the npm package page for `@xiwuqi/contextforge` shows the expected version and README
 - review GitHub About text, topics, and homepage
 - spot-check the install and quickstart flow from the published package

@@ -5,9 +5,9 @@ describe('publish dry-run checks', () => {
   it('accepts a publish manifest with required runtime files and no clutter', () => {
     const manifest = parsePublishDryRun(
       JSON.stringify({
-        name: 'contextforge',
+        name: '@xiwuqi/contextforge',
         version: '0.1.0',
-        filename: 'contextforge-0.1.0.tgz',
+        filename: 'xiwuqi-contextforge-0.1.0.tgz',
         files: [
           { path: 'LICENSE' },
           { path: 'README.md' },
@@ -36,9 +36,9 @@ describe('publish dry-run checks', () => {
   it('flags missing runtime files and leaked bootstrap clutter', () => {
     const manifest = parsePublishDryRun(
       JSON.stringify({
-        name: 'contextforge',
+        name: '@xiwuqi/contextforge',
         version: '0.1.0',
-        filename: 'contextforge-0.1.0.tgz',
+        filename: 'xiwuqi-contextforge-0.1.0.tgz',
         files: [
           { path: 'README.md' },
           { path: 'package.json' },

@@ -24,6 +24,7 @@ The checked-in source of truth for repository metadata is `.github/release/repo-
 
 ## npm package page after first publish
 
+- The package page is for `@xiwuqi/contextforge`, not an unscoped `contextforge` package.
 - README renders correctly on the npm package page.
 - Homepage, repository, bugs, and license links resolve correctly.
 - The package description and keywords match the current product positioning.

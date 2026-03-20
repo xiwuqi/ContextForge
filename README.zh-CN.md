@@ -67,6 +67,8 @@ npm run demo:refresh
 
 ## 安装、打包与发布检查
 
+公开包发布后，请使用 `@xiwuqi/contextforge` 安装；CLI 命令仍然是 `contextforge`。
+
 本地开发安装：
 
 ```bash

@@ -9,7 +9,7 @@ describe('smoke-pack helpers', () => {
   it('builds offline and online install arguments explicitly', () => {
     expect(
       buildInstallArgs({
-        tarballPath: '/tmp/contextforge-0.1.0.tgz',
+        tarballPath: '/tmp/xiwuqi-contextforge-0.1.0.tgz',
         offline: true,
       }),
     ).toEqual([
@@ -17,19 +17,19 @@ describe('smoke-pack helpers', () => {
       '--offline',
       '--no-audit',
       '--no-fund',
-      '/tmp/contextforge-0.1.0.tgz',
+      '/tmp/xiwuqi-contextforge-0.1.0.tgz',
     ]);
 
     expect(
       buildInstallArgs({
-        tarballPath: '/tmp/contextforge-0.1.0.tgz',
+        tarballPath: '/tmp/xiwuqi-contextforge-0.1.0.tgz',
         offline: false,
       }),
     ).toEqual([
       'install',
       '--no-audit',
       '--no-fund',
-      '/tmp/contextforge-0.1.0.tgz',
+      '/tmp/xiwuqi-contextforge-0.1.0.tgz',
     ]);
   });
 

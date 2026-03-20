@@ -124,13 +124,13 @@ describe('release automation helpers', () => {
 
     expect(
       buildNpmPublishArgs({
-        tarballPath: '.contextforge/releases/0.1.0/contextforge-0.1.0.tgz',
+        tarballPath: '.contextforge/releases/0.1.0/xiwuqi-contextforge-0.1.0.tgz',
         npmTag: 'latest',
         useTokenAuth: false,
       }),
     ).toEqual([
       'publish',
-      '.contextforge/releases/0.1.0/contextforge-0.1.0.tgz',
+      '.contextforge/releases/0.1.0/xiwuqi-contextforge-0.1.0.tgz',
       '--tag',
       'latest',
       '--access',
@@ -158,14 +158,14 @@ describe('release automation helpers', () => {
 
     const summary = buildReleaseSuccessSummary({
       version: '0.1.0',
-      packageName: 'contextforge',
+      packageName: '@xiwuqi/contextforge',
       releaseUrl: 'https://github.com/xiwuqi/ContextForge/releases/tag/v0.1.0',
       metadataSynced: true,
       npmPublished: true,
       npmTag: 'latest',
     });
 
-    expect(summary).toContain('Release automation summary for contextforge@0.1.0');
+    expect(summary).toContain('Release automation summary for @xiwuqi/contextforge@0.1.0');
     expect(summary).toContain('Release URL: https://github.com/xiwuqi/ContextForge/releases/tag/v0.1.0');
     expect(summary).toContain('Metadata sync ran: yes');
     expect(summary).toContain('npm publish ran: yes');
