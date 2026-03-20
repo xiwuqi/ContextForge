@@ -62,7 +62,7 @@ Before any release action, confirm:
 
 ## Manual public metadata
 
-Before a first public release, review:
+Before a public release, review:
 
 - `docs/maintainers/public-metadata-checklist.md`
 - `docs/maintainers/manual-release-handoff.md`

@@ -36,7 +36,7 @@ Check that it:
 
 - matches the current changelog and README reality
 - accurately names supported exports: Codex, Claude Code, and Cursor
-- stays honest about the package not being published yet
+- is ready to use as a public release body with only minor maintainer edits if needed
 
 ## Remaining manual steps
 
@@ -48,7 +48,7 @@ After reviewing the bundle:
 4. if metadata sync or npm publish credentials are not configured, complete only those missing steps manually
 5. verify the GitHub Release and npm package page after publish
 
-For the first public release, the npm package page to verify is `@xiwuqi/contextforge`.
+The npm package page to verify is `@xiwuqi/contextforge`.
 
 Use `docs/maintainers/public-metadata-checklist.md` for the GitHub and npm page checks.
 

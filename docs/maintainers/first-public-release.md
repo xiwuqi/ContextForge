@@ -1,8 +1,8 @@
 # First public release
 
-Use this guide when ContextForge is ready for its first public release candidate or first published release.
+ContextForge has already shipped `0.1.0`. Keep this guide as the baseline that was used for the initial public release and as a template for later stable releases.
 
-If you want the shortest actionable list, start with `docs/maintainers/first-public-release-checklist.md`. Use `docs/maintainers/live-release-prerequisites.md` for the exact first live dispatch values and external setup. Use this document for the surrounding context and decision points.
+If you want the shortest actionable list, start with `docs/maintainers/first-public-release-checklist.md`. Use `docs/maintainers/live-release-prerequisites.md` for the initial `0.1.0` dispatch values and external setup. Use this document for the surrounding context and decision points.
 
 ## What should already be true
 
@@ -41,7 +41,7 @@ npm run release:artifacts
 
 When the version, changelog, permissions, and npm setup are ready, trigger the release workflow in GitHub Actions instead of recreating the publish steps by hand.
 
-For the first live public release, the recommended workflow-dispatch values are:
+The initial `0.1.0` public release used these workflow-dispatch values:
 
 - `version = 0.1.0`
 - `npm_tag = latest`
@@ -69,7 +69,7 @@ npm run demo:refresh
 
 ## Update the changelog
 
-Before cutting a release candidate or first public release:
+Before cutting a release candidate or public release:
 
 1. move the relevant notes in `CHANGELOG.md` into a dated or versioned entry when you are ready
 2. keep the wording honest about what has and has not been published
@@ -79,7 +79,7 @@ Before cutting a release candidate or first public release:
 
 The repository currently keeps versioning manual. Before any publish:
 
-- decide whether the next release should be an explicit release candidate such as `0.1.0-rc.1` or the first stable public `0.1.0`
+- decide whether the next release should be an explicit release candidate such as `0.1.1-rc.1` or the next stable public version
 - update `package.json` and `package-lock.json` together if the version changes
 - rerun `npm run release:check` after any version change
 
@@ -93,12 +93,12 @@ Typical manual steps later may include:
 - trigger the release workflow with the exact package version once you are satisfied with the release contents
 - use `docs/maintainers/npm-publish-guide.md` if npm trusted publishing or fallback token auth is not yet configured
 - confirm the intended public npm package identifier is `@xiwuqi/contextforge`
-- update the GitHub About text, topics, homepage, and first release draft using `docs/maintainers/public-metadata-checklist.md`
-- review the bundle contents and release-note draft described in `docs/maintainers/manual-release-handoff.md`
+- update the GitHub About text, topics, homepage, and release body using `docs/maintainers/public-metadata-checklist.md`
+- review the bundle contents and generated release notes described in `docs/maintainers/manual-release-handoff.md`
 
 ## What stays manual
 
 - version selection
 - changelog curation
 - deciding whether to dispatch the workflow at all
-- any release-note editing or announcement copy beyond the generated draft
+- any release-note editing or announcement copy beyond the generated release notes

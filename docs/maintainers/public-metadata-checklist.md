@@ -14,15 +14,15 @@ The checked-in source of truth for repository metadata is `.github/release/repo-
 - Website/homepage points to the repository README or another deliberate public landing page.
 - The pinned repository description does not imply unsupported agents or hosted features.
 
-## First GitHub release draft
+## GitHub release body
 
-- Draft release notes from `CHANGELOG.md`.
+- Generate release notes from `CHANGELOG.md`.
 - Start from `.contextforge/releases/<version>/release-notes.md` when a fresh handoff bundle exists.
 - Make the release title match the chosen version or release-candidate tag.
 - Confirm the notes describe the CLI honestly and do not imply automated publish or hosted infrastructure.
-- If the workflow created the release automatically, review the published draft once more instead of assuming the generated text needs no edits.
+- If the workflow created the release automatically, review the published release body once more instead of assuming the generated text needs no edits.
 
-## npm package page after first publish
+## npm package page after publish
 
 - The package page is for `@xiwuqi/contextforge`, not an unscoped `contextforge` package.
 - README renders correctly on the npm package page.

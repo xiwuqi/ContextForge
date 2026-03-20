@@ -75,19 +75,33 @@ export function extractVersionHighlights(changelog, version) {
 
 export function extractIntroParagraph(readme) {
   const lines = readme.split(/\r?\n/);
-  const bodyLines = lines.slice(1);
+  let seenTitle = false;
   const paragraph = [];
 
-  for (const line of bodyLines) {
+  for (const line of lines) {
     const trimmed = line.trim();
+
+    if (!seenTitle) {
+      if (trimmed.startsWith('# ')) {
+        seenTitle = true;
+      }
+      continue;
+    }
+
     if (trimmed.length === 0) {
       if (paragraph.length > 0) {
         break;
       }
       continue;
     }
-    if (trimmed.startsWith('## ')) {
+    if (trimmed.startsWith('#')) {
       break;
+    }
+    if (trimmed.startsWith('![') || trimmed.startsWith('<img')) {
+      if (paragraph.length > 0) {
+        break;
+      }
+      continue;
     }
     paragraph.push(trimmed);
   }
@@ -106,38 +120,40 @@ export function buildReleaseNotes({ packageName, version, readme, changelog }) {
   const highlights = extractVersionHighlights(changelog, version);
   const fallbackHighlights = extractSectionBullets(changelog, '### Release-candidate scope');
   const exports = extractSupportedExports(readme);
+  const releaseHighlights =
+    (highlights.length > 0 ? highlights : fallbackHighlights).length > 0
+      ? (highlights.length > 0 ? highlights : fallbackHighlights).map((entry) => `- ${entry}`)
+      : ['- Local-first CLI release with repository scan, task-pack compile, and agent brief export workflows.'];
 
   const sections = [
     `# ${title} v${version}`,
     '',
-    'Draft release notes for manual maintainer review. This version has not been published yet.',
+    summary || `${title} is a local-first repository-to-agent context CLI.`,
     '',
-    '## Summary',
+    '## Highlights',
     '',
-    summary || `${packageName} is a local-first repository-to-agent CLI.`,
-    '',
-    '## Included in this draft release',
-    '',
-    ...((highlights.length > 0 ? highlights : fallbackHighlights).length > 0
-      ? (highlights.length > 0 ? highlights : fallbackHighlights).map((entry) => `- ${entry}`)
-      : ['- Local-first CLI release candidate with repository scan, task-pack compile, and agent brief export workflows.']),
+    ...releaseHighlights,
     '',
     '## Supported exports',
     '',
     ...exports.map((entry) => `- ${entry}`),
     '',
-    '## Validation completed before bundle generation',
+    '## Install',
+    '',
+    '```bash',
+    `npm i ${packageName}`,
+    '```',
+    '',
+    '## Validation',
     '',
     '- `npm run release:check`',
     '- `npm run publish:dry-run`',
     '',
-    '## Manual steps remaining',
+    '## Notes',
     '',
-    '- Review this draft and `CHANGELOG.md`.',
-    '- Confirm the release automation prerequisites and repository settings are configured.',
-    '- Trigger the manual GitHub Actions release workflow when ready.',
-    '- If metadata sync or npm publish credentials are not configured, complete those steps manually.',
-    '- Verify the GitHub Release and npm package page after publish.',
+    `- Package: \`${packageName}\``,
+    '- CLI command: `contextforge`',
+    '- Local-first core workflow with no required hosted service.',
   ];
 
   return `${sections.join('\n')}\n`;

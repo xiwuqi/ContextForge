@@ -4,7 +4,7 @@ ContextForge ships a manual-dispatch release workflow at `.github/workflows/rele
 
 It does not run on push. A maintainer must dispatch it explicitly with the target version.
 
-For the first live public release, see `docs/maintainers/live-release-prerequisites.md` for the exact dispatch values and required external setup.
+See `docs/maintainers/live-release-prerequisites.md` for the initial `0.1.0` dispatch values and the external setup that still applies to later stable releases.
 
 ## What the workflow does
 

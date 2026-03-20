@@ -1,6 +1,6 @@
 # First public release checklist
 
-Use this when you want the shortest path to a real first release decision.
+ContextForge already shipped `0.1.0`. Use this as the shortest checklist for the initial release record and as a baseline for later stable releases.
 
 ## Before dispatch
 
@@ -26,7 +26,7 @@ Recommended defaults for a normal public release:
 - `sync_repo_metadata`: `true`
 - `prerelease`: `false`
 
-For the first live public release, use these exact values:
+The initial `0.1.0` public release used these exact values:
 
 - `version = 0.1.0`
 - `npm_tag = latest`

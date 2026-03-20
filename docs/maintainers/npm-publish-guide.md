@@ -32,7 +32,7 @@ The workflow will then publish using token auth instead of trusted publishing.
 
 After a successful publish response, the workflow also retries npm visibility checks for a short window so normal registry propagation delays do not immediately mark the release as failed.
 
-For the first live public release, keep these workflow inputs:
+For the initial `0.1.0` public release, these workflow inputs were used:
 
 - `version = 0.1.0`
 - `npm_tag = latest`

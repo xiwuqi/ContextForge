@@ -1,6 +1,6 @@
 # Live release prerequisites
 
-Use this before triggering `.github/workflows/release.yml` for the first real public release.
+ContextForge already shipped `0.1.0`. Use this document as the exact prerequisite record for that initial release and as the baseline for later stable releases.
 
 ## External setup required
 
@@ -10,9 +10,9 @@ Use this before triggering `.github/workflows/release.yml` for the first real pu
 - npm trusted publishing should be configured for this repository if you want tokenless publish from GitHub Actions.
 - If npm trusted publishing is not configured, create the repository secret `NPM_TOKEN` as the fallback publish credential for `@xiwuqi/contextforge`.
 
-## First live dispatch values
+## Initial `0.1.0` dispatch values
 
-For the first public release, use:
+The initial `0.1.0` public release used:
 
 - `version = 0.1.0`
 - `npm_tag = latest`

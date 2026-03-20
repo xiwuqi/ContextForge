@@ -103,7 +103,7 @@ npm run release:check
 npm run release:artifacts
 ```
 
-该命令会在 `.contextforge/releases/<version>/` 下生成 tarball、包文件清单、release notes 草稿、checksums 和简短的人工交接说明，也可作为 workflow dispatch 前的审阅输入。
+该命令会在 `.contextforge/releases/<version>/` 下生成 tarball、包文件清单、release notes、checksums 和简短的人工交接说明，也可作为 workflow dispatch 前的审阅输入。
 
 之后维护者可以在 version、changelog、仓库权限和 npm publish 配置都准备好后，手动触发 GitHub Actions release workflow。它不会在 push 时自动运行。
 

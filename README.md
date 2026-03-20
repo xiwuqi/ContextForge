@@ -103,7 +103,7 @@ Versioned release handoff bundle:
 npm run release:artifacts
 ```
 
-This writes a versioned bundle under `.contextforge/releases/<version>/` with the tarball, package file list, release-note draft, checksums, and a short summary for manual release handoff or workflow dispatch review.
+This writes a versioned bundle under `.contextforge/releases/<version>/` with the tarball, package file list, release notes, checksums, and a short summary for manual release handoff or workflow dispatch review.
 
 Maintainers can then trigger the manual GitHub Actions release workflow once the version, changelog, repository permissions, and npm publishing setup are ready. It does not run on push.
 

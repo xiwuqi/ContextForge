@@ -3,6 +3,7 @@ import {
   buildChecksums,
   buildReleaseManifest,
   buildReleaseNotes,
+  extractIntroParagraph,
   extractVersionHighlights,
   extractTitle,
   extractSupportedExports,
@@ -53,9 +54,13 @@ describe('release artifact helpers', () => {
   });
 
   it('builds release notes from README and changelog content', () => {
-    const readme = `# ContextForge
+    const readme = `[English](README.md) | [简体中文](README.zh-CN.md)
+
+# ContextForge
 
 ContextForge is a local-first repository-to-agent context layer.
+
+![ContextForge overview](docs/assets/contextforge-overview.svg)
 
 ## Supported export targets
 
@@ -82,6 +87,7 @@ ContextForge is a local-first repository-to-agent context layer.
 
     expect(extractSupportedExports(readme)).toEqual(['Codex', 'Claude Code', 'Cursor']);
     expect(extractTitle(readme)).toBe('ContextForge');
+    expect(extractIntroParagraph(readme)).toBe('ContextForge is a local-first repository-to-agent context layer.');
     expect(extractVersionHighlights(changelog, '0.1.0')).toEqual([
       'Stable packaged CLI.',
       'Manual-dispatch release workflow.',
@@ -96,9 +102,14 @@ ContextForge is a local-first repository-to-agent context layer.
 
     expect(notes).toContain('# ContextForge v0.1.0');
     expect(notes).toContain('ContextForge is a local-first repository-to-agent context layer.');
+    expect(notes).toContain('## Install');
+    expect(notes).toContain('npm i @xiwuqi/contextforge');
     expect(notes).toContain('- Stable packaged CLI.');
     expect(notes).toContain('- Manual-dispatch release workflow.');
     expect(notes).toContain('- Codex');
     expect(notes).toContain('- Cursor');
+    expect(notes).toContain('- CLI command: `contextforge`');
+    expect(notes).not.toContain('Draft release notes for manual maintainer review.');
+    expect(notes).not.toContain('## Manual steps remaining');
   });
 });
