@@ -4,6 +4,7 @@ import {
   runCompileCommand,
   runExportClaudeCommand,
   runExportCodexCommand,
+  runExportCursorCommand,
   runInitCommand,
   runLintCommand,
   runScanCommand,
@@ -80,6 +81,14 @@ export async function runCli(argv: string[], io: CliIO = createDefaultIO(), cwd 
     .requiredOption('--input <file>', 'Path to the task pack JSON file.')
     .option('--output <file>', 'Optional output path. Defaults to .contextforge/exports/claude/<slug>.md.')
     .action(async (options) => runExportClaudeCommand(runtime, options));
+
+  exportCommand
+    .command('cursor')
+    .description('Export a task pack JSON file into a compact Cursor task brief markdown file.')
+    .requiredOption('--input <file>', 'Path to the task pack JSON file.')
+    .option('--output <file>', 'Optional output path. Defaults to .contextforge/exports/cursor/<slug>.md.')
+    .option('--rule-output <file>', 'Optional Cursor rule suggestion output path. Must end in .mdc.')
+    .action(async (options) => runExportCursorCommand(runtime, options));
 
   program
     .command('lint')

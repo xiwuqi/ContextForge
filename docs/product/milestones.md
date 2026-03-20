@@ -110,3 +110,19 @@ Exit criteria:
 - the packed tarball installs into a temporary project and runs a real CLI command
 - CI covers build, test, lint, and packaged smoke validation
 - docs explain the local install and release-readiness story without implying automatic publish
+
+## Milestone 8: Export Cursor
+
+Deliver:
+
+- `export cursor` command
+- compact Cursor task brief renderer
+- optional task-scoped Cursor `.mdc` rule suggestion export
+- deterministic golden coverage for Cursor brief and rule suggestion output
+
+Exit criteria:
+
+- `export codex` and `export claude` remain backward compatible
+- `export cursor` writes to `.contextforge/exports/cursor/<slug>.md` by default
+- Cursor rule suggestions are only written when `--rule-output` is explicitly provided
+- no automatic writes to `.cursor/rules/*` or legacy `.cursorrules`

@@ -1,11 +1,11 @@
 # ContextForge PRD
 
-- Version: v0.2 step 3
+- Version: v0.2 step 4
 - Status: Ready for implementation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
-- Primary integration targets: Codex and Claude Code
-- Secondary compatibility target: Cursor / Aider / generic coding agents
+- Primary integration targets: Codex, Claude Code, and Cursor
+- Secondary compatibility target: Aider / generic coding agents
 
 ## Product summary
 
@@ -15,7 +15,7 @@ The MVP stays inside four capabilities:
 
 1. scan a repository
 2. compile markdown or GitHub issue sources into a task pack
-3. export a Codex-ready prompt or Claude Code task brief
+3. export a Codex-ready prompt, Claude Code task brief, or Cursor task brief
 4. lint stale context and guidance
 
 ## Product boundaries
@@ -57,6 +57,11 @@ Codex export:
 Claude export:
 
 - `.contextforge/exports/claude/<slug>.md`
+
+Cursor export:
+
+- `.contextforge/exports/cursor/<slug>.md`
+- optional task-scoped Cursor rule suggestion file only when explicitly requested with `--rule-output`
 
 Distribution readiness:
 

@@ -1,12 +1,12 @@
 # ContextForge
 
-ContextForge is a local-first CLI for turning a repository plus a task source into a compact task-scoped context pack and agent-ready export files for Codex and Claude Code.
+ContextForge is a local-first CLI for turning a repository plus a task source into a compact task-scoped context pack and agent-ready export files for Codex, Claude Code, and Cursor.
 
 It exists to improve coding-agent setup, not to replace the agent. The tool focuses on four jobs:
 
 1. scan a repository
 2. compile task sources into structured task packs
-3. export compact Codex and Claude Code prompts
+3. export compact Codex, Claude Code, and Cursor prompts
 4. lint stale context and guidance
 
 ## Why it exists
@@ -45,6 +45,7 @@ contextforge scan [--json] [--max-depth 6]
 contextforge compile (--input <file> | --github-issue <url|owner/repo#number> | --github-issue-json <path>) [--title <title>] [--json]
 contextforge export codex --input <task-pack.json> [--output <file>]
 contextforge export claude --input <task-pack.json> [--output <file>]
+contextforge export cursor --input <task-pack.json> [--output <file>] [--rule-output <file>]
 contextforge lint [--json] [--strict]
 ```
 
@@ -71,6 +72,10 @@ Codex prompt exports are written to `.github/codex/prompts/` by default:
 Claude Code task brief exports are written to `.contextforge/exports/claude/` by default:
 
 - `.contextforge/exports/claude/<slug>.md`
+
+Cursor task brief exports are written to `.contextforge/exports/cursor/` by default:
+
+- `.contextforge/exports/cursor/<slug>.md`
 
 ## Quickstart
 
@@ -99,6 +104,7 @@ contextforge compile --github-issue-json tests/fixtures/github/contextforge-issu
 ```bash
 contextforge export codex --input .contextforge/task-packs/add-lint-command.json
 contextforge export claude --input .contextforge/task-packs/add-lint-command.json
+contextforge export cursor --input .contextforge/task-packs/add-lint-command.json
 ```
 
 4. Lint the generated guidance for drift.
@@ -148,6 +154,33 @@ This milestone does not auto-write any Claude project memory files, including:
 - `.claude/rules/*`
 - `.claude/settings.json`
 - `.claude/settings.local.json`
+
+## Cursor exports
+
+`contextforge export cursor` writes a compact markdown brief for Cursor Agent and can optionally write a task-scoped `.mdc` rule suggestion file.
+
+Example brief export:
+
+```bash
+contextforge export cursor --input .contextforge/task-packs/add-lint-command.json
+```
+
+Optional manual rule suggestion export:
+
+```bash
+contextforge export cursor \
+  --input .contextforge/task-packs/add-lint-command.json \
+  --rule-output .cursor/rules/add-lint-command.mdc
+```
+
+Use the generated brief by pasting it into Cursor Agent chat or keeping it in the workspace as a task brief. The optional `.mdc` file is only a suggestion artifact for manual use.
+
+This milestone does not auto-write:
+
+- `.cursor/rules/*`
+- `.cursorrules`
+
+Legacy `.cursorrules` support is not added in this milestone.
 
 ## Repository layout
 

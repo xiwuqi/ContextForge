@@ -1,7 +1,7 @@
 {
   "name": "contextforge",
   "version": "0.1.0",
-  "description": "Local-first CLI that compiles repository context and task sources into agent-ready briefs for Codex and Claude Code.",
+  "description": "Local-first CLI that compiles repository context and task sources into agent-ready briefs for Codex, Claude Code, and Cursor.",
   "license": "MIT",
   "type": "module",
   "keywords": [
@@ -11,7 +11,8 @@
     "repository-context",
     "coding-agents",
     "codex",
-    "claude-code"
+    "claude-code",
+    "cursor"
   ],
   "homepage": "https://github.com/xiwuqi/ContextForge#readme",
   "bugs": {

@@ -1,0 +1,30 @@
+---
+description: "Task-scoped Cursor rule suggestion for Support GitHub issue sources in compile"
+alwaysApply: false
+globs:
+  - "src/**"
+  - "tests/**"
+---
+
+Keep work scoped to "Support GitHub issue sources in compile".
+
+Objective: Make `contextforge compile` accept GitHub issues directly.
+
+Prefer edits in:
+- `src`
+- `tests`
+
+Respect these constraints:
+- Keep the workflow local-first.
+- Do not add a hosted backend.
+- Keep GitHub fetching optional.
+
+Validate with:
+- `npm run build`
+- `npm run test`
+- `npm run lint`
+
+Stop when:
+- `contextforge compile` accepts a GitHub issue source.
+- Task packs include source metadata.
+- Documentation explains the new source flags.

@@ -1,6 +1,6 @@
 import { DEFAULT_CLAUDE_EXPORTS_DIR } from '../utils/constants.js';
 import { type TaskPack } from '../schema/index.js';
-import { exportTaskPackMarkdown } from './shared.js';
+import { exportTaskPackMarkdown, renderTaskPackSourceContext } from './shared.js';
 
 export interface ExportClaudeOptions {
   rootDir?: string;
@@ -9,7 +9,7 @@ export interface ExportClaudeOptions {
 }
 
 export function renderClaudePrompt(taskPack: TaskPack): string {
-  const sourceContext = renderSourceContext(taskPack);
+  const sourceContext = renderTaskPackSourceContext(taskPack);
   const relevantPaths = taskPack.relevantPaths.length > 0
     ? taskPack.relevantPaths.map((item) => `- \`${item}\``)
     : ['- Review the repository context to choose the working area.'];
@@ -94,33 +94,4 @@ export async function exportClaudePrompt(options: ExportClaudeOptions): Promise<
     prompt: result.content,
     taskPack: result.taskPack,
   };
-}
-
-function renderSourceContext(taskPack: TaskPack): string[] {
-  const lines: string[] = [];
-
-  if (taskPack.sourceType === 'markdown_file') {
-    lines.push(`- Markdown task file: \`${taskPack.sourceTaskPath}\``);
-  } else if (taskPack.sourceType === 'github_issue') {
-    lines.push(`- GitHub issue: \`${taskPack.sourceRef}\``);
-  } else {
-    lines.push(`- GitHub issue JSON: \`${taskPack.sourceTaskPath}\``);
-    if (taskPack.sourceRef !== taskPack.sourceTaskPath) {
-      lines.push(`- Issue ref: \`${taskPack.sourceRef}\``);
-    }
-  }
-
-  if (taskPack.sourceTitle && taskPack.sourceTitle !== taskPack.title) {
-    lines.push(`- Source title: ${taskPack.sourceTitle}`);
-  }
-
-  if (taskPack.sourceLabels.length > 0) {
-    lines.push(`- Labels: ${taskPack.sourceLabels.map((item) => `\`${item}\``).join(', ')}`);
-  }
-
-  if (taskPack.sourceUrl) {
-    lines.push(`- URL: ${taskPack.sourceUrl}`);
-  }
-
-  return lines;
 }
