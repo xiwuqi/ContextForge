@@ -36,7 +36,7 @@ describe('path scoring', () => {
         importantFiles: [
           'src/cli/commands/lint.ts',
           'tests/fixtures/golden/task-add-lint-command.md',
-          '.github/codex/prompts/add-lint-command.md',
+          '.github/codex/prompts/master-build-contextforge.md',
         ],
         topLevelDirectories: ['src', 'tests', 'docs'],
         entrySignals: ['package.json'],
@@ -45,7 +45,7 @@ describe('path scoring', () => {
           'package.json',
           'src/cli/commands/lint.ts',
           'tests/fixtures/golden/task-add-lint-command.md',
-          '.github/codex/prompts/add-lint-command.md',
+          '.github/codex/prompts/master-build-contextforge.md',
         ],
       },
       commands: {
@@ -68,6 +68,6 @@ describe('path scoring', () => {
 
     expect(ranked.relevantFiles).toContain('src/cli/commands/lint.ts');
     expect(ranked.relevantFiles).not.toContain('tests/fixtures/golden/task-add-lint-command.md');
-    expect(ranked.relevantFiles).not.toContain('.github/codex/prompts/add-lint-command.md');
+    expect(ranked.relevantFiles).not.toContain('.github/codex/prompts/master-build-contextforge.md');
   });
 });

@@ -190,3 +190,19 @@ Exit criteria:
 - the bundle includes tarball, manifest, package file list, checksums, release notes, and summary
 - maintainers can inspect the bundle and complete only the remaining external manual steps
 - release docs stay honest about what is and is not automated
+
+## Milestone 13: Bilingual README and Prompt Hygiene
+
+Deliver:
+
+- English `README.md` and Simplified Chinese `README.zh-CN.md`
+- lightweight SVG onboarding diagrams under `docs/assets/`
+- archived milestone Codex prompts outside the default product output directory
+- explicit archive notes for moved prompt history
+
+Exit criteria:
+
+- both READMEs stay aligned in meaning and embed the visual assets
+- first-time readers can understand the workflow and output layout quickly
+- `.github/codex/prompts/` keeps only active workflow or intentional product-facing files
+- milestone build-history prompts are archived and documented clearly

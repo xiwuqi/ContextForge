@@ -8,3 +8,7 @@ Current product source-of-truth docs live in:
 - `AGENTS.md`
 - `docs/product/prd.md`
 - `docs/product/milestones.md`
+
+Archived build-history Codex prompts live in:
+
+- `docs/archive/bootstrap/codex-prompts/`

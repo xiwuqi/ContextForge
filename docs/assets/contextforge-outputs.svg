@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">ContextForge outputs</title>
+  <desc id="desc">Diagram showing where ContextForge writes repository context, task packs, and agent exports.</desc>
+  <style>
+    .bg { fill: #f4f7fb; }
+    .frame { fill: #ffffff; stroke: #24405a; stroke-width: 2; rx: 18; ry: 18; }
+    .band { fill: #dceaf8; }
+    .title { font: 700 26px "Segoe UI", Arial, sans-serif; fill: #18324a; }
+    .label { font: 700 19px "Segoe UI", Arial, sans-serif; fill: #18324a; }
+    .body { font: 400 15px "Segoe UI", Arial, sans-serif; fill: #31506b; }
+    .mono { font: 400 14px "Consolas", "SFMono-Regular", monospace; fill: #18324a; }
+    .arrow { stroke: #24405a; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#24405a" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="460" rx="24" ry="24" />
+  <text class="title" x="52" y="54">Default output locations</text>
+
+  <rect class="frame" x="52" y="90" width="330" height="152" />
+  <rect class="band" x="52" y="90" width="330" height="44" rx="18" ry="18" />
+  <text class="label" x="78" y="118">Repository context</text>
+  <text class="mono" x="78" y="162">.contextforge/context.json</text>
+  <text class="mono" x="78" y="188">.contextforge/context.md</text>
+  <text class="mono" x="78" y="214">.contextforge/agents.suggested.md</text>
+
+  <rect class="frame" x="435" y="90" width="330" height="152" />
+  <rect class="band" x="435" y="90" width="330" height="44" rx="18" ry="18" />
+  <text class="label" x="461" y="118">Task pack</text>
+  <text class="mono" x="461" y="162">.contextforge/task-packs/&lt;slug&gt;.json</text>
+  <text class="mono" x="461" y="188">.contextforge/task-packs/&lt;slug&gt;.md</text>
+  <text class="body" x="461" y="216">Compile keeps source metadata and validation info together.</text>
+
+  <rect class="frame" x="818" y="90" width="330" height="152" />
+  <rect class="band" x="818" y="90" width="330" height="44" rx="18" ry="18" />
+  <text class="label" x="844" y="118">Codex export</text>
+  <text class="mono" x="844" y="162">.github/codex/prompts/&lt;slug&gt;.md</text>
+  <text class="body" x="844" y="196">Default product output directory</text>
+
+  <rect class="frame" x="244" y="284" width="330" height="132" />
+  <rect class="band" x="244" y="284" width="330" height="44" rx="18" ry="18" />
+  <text class="label" x="270" y="312">Claude Code export</text>
+  <text class="mono" x="270" y="356">.contextforge/exports/claude/&lt;slug&gt;.md</text>
+
+  <rect class="frame" x="626" y="284" width="400" height="132" />
+  <rect class="band" x="626" y="284" width="400" height="44" rx="18" ry="18" />
+  <text class="label" x="652" y="312">Cursor export</text>
+  <text class="mono" x="652" y="352">.contextforge/exports/cursor/&lt;slug&gt;.md</text>
+  <text class="mono" x="652" y="378">optional --rule-output for .mdc suggestion file</text>
+
+  <path class="arrow" d="M382 166 H423" />
+  <path class="arrow" d="M765 166 H806" />
+  <path class="arrow" d="M600 242 V272" />
+</svg>

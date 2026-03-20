@@ -11,6 +11,7 @@ describe('publish dry-run checks', () => {
         files: [
           { path: 'LICENSE' },
           { path: 'README.md' },
+          { path: 'README.zh-CN.md' },
           { path: 'package.json' },
           { path: 'dist/cli/index.js' },
           { path: 'dist/cli/app.js' },

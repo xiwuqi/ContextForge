@@ -1,6 +1,6 @@
 # ContextForge PRD
 
-- Version: v0.2 step 8
+- Version: v0.2 step 9
 - Status: Release-candidate preparation
 - Product type: Open source, local-first developer tool
 - Primary surface: CLI
@@ -80,6 +80,9 @@ Release-candidate onboarding:
 - `npm run release:check` runs the full first-release candidate validation set
 - `npm run publish:dry-run` validates npm publish readiness without publishing
 - `npm run release:artifacts` writes a versioned release handoff bundle under `.contextforge/releases/<version>/`
+- `README.md` and `README.zh-CN.md` provide aligned English and Simplified Chinese onboarding
+- lightweight SVG diagrams under `docs/assets/` explain the workflow and output layout
+- archived milestone Codex prompts live outside `.github/codex/prompts/` so the default export directory stays product-facing
 - `examples/demo/` contains small checked-in representative outputs for first-time readers
 - `CHANGELOG.md` and maintainer release docs stay manual and honest about publish state
 

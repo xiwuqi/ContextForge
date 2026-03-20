@@ -16,6 +16,7 @@ export const ALLOWED_NON_DIST_FILES = new Set([
   'CHANGELOG.md',
   'LICENSE',
   'README.md',
+  'README.zh-CN.md',
   'package.json',
 ]);
 

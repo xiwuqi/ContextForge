@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">ContextForge overview</title>
+  <desc id="desc">Overview of repository scan, task compilation, and agent export flow.</desc>
+  <style>
+    .bg { fill: #f8f6ef; }
+    .panel { fill: #ffffff; stroke: #1f3b2d; stroke-width: 2; rx: 18; ry: 18; }
+    .accent { fill: #d6eadf; }
+    .title { font: 700 26px "Segoe UI", Arial, sans-serif; fill: #173324; }
+    .label { font: 700 20px "Segoe UI", Arial, sans-serif; fill: #173324; }
+    .body { font: 400 15px "Segoe UI", Arial, sans-serif; fill: #274737; }
+    .small { font: 400 13px "Segoe UI", Arial, sans-serif; fill: #274737; }
+    .arrow { stroke: #1f3b2d; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f3b2d" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="360" rx="24" ry="24" />
+
+  <text class="title" x="60" y="58">ContextForge overview</text>
+
+  <rect class="panel" x="60" y="96" width="240" height="180" />
+  <rect class="accent" x="60" y="96" width="240" height="48" rx="18" ry="18" />
+  <text class="label" x="88" y="128">Inputs</text>
+  <text class="body" x="88" y="170">Repository files</text>
+  <text class="body" x="88" y="198">Markdown task or</text>
+  <text class="body" x="88" y="222">GitHub issue source</text>
+  <text class="small" x="88" y="252">Local-first by default</text>
+
+  <rect class="panel" x="350" y="96" width="240" height="180" />
+  <rect class="accent" x="350" y="96" width="240" height="48" rx="18" ry="18" />
+  <text class="label" x="378" y="128">Scan and compile</text>
+  <text class="body" x="378" y="170">`init` or `scan` builds</text>
+  <text class="body" x="378" y="194">repo context artifacts</text>
+  <text class="body" x="378" y="224">`compile` builds a</text>
+  <text class="body" x="378" y="248">task-scoped task pack</text>
+
+  <rect class="panel" x="640" y="96" width="240" height="180" />
+  <rect class="accent" x="640" y="96" width="240" height="48" rx="18" ry="18" />
+  <text class="label" x="668" y="128">Export</text>
+  <text class="body" x="668" y="170">`export codex`</text>
+  <text class="body" x="668" y="194">`export claude`</text>
+  <text class="body" x="668" y="218">`export cursor`</text>
+  <text class="small" x="668" y="248">Compact, task-scoped briefs</text>
+
+  <rect class="panel" x="930" y="96" width="210" height="180" />
+  <rect class="accent" x="930" y="96" width="210" height="48" rx="18" ry="18" />
+  <text class="label" x="958" y="128">Agent use</text>
+  <text class="body" x="958" y="170">Codex prompt file</text>
+  <text class="body" x="958" y="194">Claude Code brief</text>
+  <text class="body" x="958" y="218">Cursor brief or rule</text>
+  <text class="small" x="958" y="248">Paste, reference, or review</text>
+
+  <path class="arrow" d="M300 186 H340" />
+  <path class="arrow" d="M590 186 H630" />
+  <path class="arrow" d="M880 186 H920" />
+</svg>
